@@ -9,9 +9,45 @@ app = Flask(__name__)
 # NOTE: disable this after launch.
 CORS(app)
 
-@app.route('/')
-def hello_world():
-    print("Received request")
-    #return 'Best Trading Indicators Ever!'
 
-    return render_template("index.html")
+# Return SMA backtesting result in JSON format, the high level
+# JSON structure is ['data': data , 'err_msg': error_message].
+# error_msg='OK' indicates success, or else it should contain
+# the error message.
+#
+# You can test this function by visiting this url:
+#   http://AWS_SITE_URL/backtest_sma
+@app.route('/backtest_sma')
+def backtest_sma():
+    # Get stock tickers, return error message if it's not set.
+    if not 'stock_ticker' in request.args:
+        return json.dumps({'err_msg': 'stock_ticker must be specified!'})
+    stock_ticker = request.args.get('stock_ticker')
+
+    # Get last days to backtest, return error messsage if it's not set.
+    if not 'last_days' in request.args:
+        return json.dumps({'err_msg': 'last_days must be specified!'})
+    last_days = request.args.get('last_days')
+
+    print('Get request with ticker=' + stock_ticker +
+            ', last_days=' + last_days)
+
+    # TODO(Lester):
+    #   - Pull the stocks data
+    #   - Run backtesting
+    #   - Convert result into JSON and return it.
+
+    # Fake data for testing.
+    result = [{'key': 'Start',   'value': '2020-01-01'},
+              {'key': 'End',     'value': '2020-02-09'},
+              {'key': 'Gain',    'value': 10000},
+              {'key': 'WinRate', 'value': 0.89}]
+
+    return json.dumps({'data': result, 'err_msg': 'OK'})
+ 
+
+@app.route('/')
+def w210():
+    print('Received request')
+    #return 'Best Trading Indicators Ever!'
+    return render_template('index.html')
