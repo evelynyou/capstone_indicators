@@ -66,4 +66,8 @@ h3 {
   display: block;
 }
  
-
+.intro_header { 
+  margin-left: 100px;
+  margin-right: 100px;
+  /* text-align: left; */
+}

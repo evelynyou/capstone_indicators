@@ -24,12 +24,17 @@
 
     <!-- JS to do the tab switch -->
     <script src="/static/js/tab.js"></script>
+    <script src="/static/js/backtest.js"></script>
+    
 </head>
 
 <body>
     <center>
         <div class="header">
             <h1> Assesment of Trading Indicators </h1>
+            <i>
+                <p>test out the trading signals automatically...</p>
+            </i>
         </div>
 
         <div class="tab">
@@ -55,6 +60,14 @@
         </div>
 
         <div id="tryitout" class="tabcontent">  
+            <div class='search_bar'>
+                Please input one stock ticker:
+                <input type="text" id="ticker"> 
+                <button class="search_button" onclick="backtest()"> Search </button>  
+            </div>
+            <div id="indicator_table">
+            </div>
+
             <div class="intro_header">
                 <h4>
                     <small>
@@ -67,7 +80,7 @@
             </div>  
         </div>
 
-        <div id="indicators" class="tabcontent">  
+        <div id="indicators" class="tabcontent">   
             <div class="intro_header">
                 <h4>
                     <small>
