@@ -21,6 +21,9 @@
     <script src="https://d3js.org/d3-color.v1.min.js"></script>
     <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <!-- JS to do the tab switch -->
+    <script src="/static/js/tab.js"></script>
 </head>
 
 <body>
@@ -29,13 +32,76 @@
             <h1> Assesment of Trading Indicators </h1>
         </div>
 
-        <div>
-            <p> TEST TEST TEST TEST TEST TEST 
-            </p>
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'howitworks')">How It Works</button>
+            <button class="tablinks" onclick="openTab(event, 'tryitout')">Try It Out!</button>
+            <button class="tablinks" onclick="openTab(event, 'indicators')">Trading Indicators</button>
+            <button class="tablinks " onclick="openTab(event, 'aboutview')">About</button>
+        </div> 
+
+        <div id="howitworks" class="tabcontent defaultTab">  
+            <div class="intro_header">
+                <h4>
+                    <small>
+                        This tab explains how things works! <br>
+                        This tab explains how things works! <br>
+                        This tab explains how things works!<br>
+                        This tab explains how things works!<br>
+                        This tab explains how things works!<br>
+                        This tab explains how things works!<br> 
+                    </small>
+                </h4> 
+            </div>  
         </div>
 
+        <div id="tryitout" class="tabcontent">  
+            <div class="intro_header">
+                <h4>
+                    <small>
+                        Try it out! <br> 
+                        Input Box ! <br> 
+                        Table of Indicators! <br> 
+                        Link to detailed page! <br>
+                    </small>
+                </h4> 
+            </div>  
+        </div>
+
+        <div id="indicators" class="tabcontent">  
+            <div class="intro_header">
+                <h4>
+                    <small>
+                        Details about each indicators! <br> 
+                        Details about each indicators! <br> 
+                        Details about each indicators! <br> 
+                        Details about each indicators! <br> 
+                        Details about each indicators! <br> 
+                        Details about each indicators! <br> 
+                        Details about each indicators! <br> 
+                    </small>
+                </h4> 
+            </div>  
+        </div>
+
+        <div id="aboutview" class="tabcontent">  
+            <div class="intro_header">
+                <h4>
+                    <small>
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
+                    </small>
+                </h4> 
+            </div>  
+        </div> 
+
         <!-- Rendering JS -->
-        <script src="/static/js/test.js"></script>
+        <script src="/static/js/test.js"></script> 
+        
     </center>
 </body>
 
