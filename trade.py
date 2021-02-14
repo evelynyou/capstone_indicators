@@ -25,9 +25,9 @@ def backtest_sma():
     stock_ticker = request.args.get('stock_ticker')
 
     # Get last days to backtest, return error messsage if it's not set.
-    if not 'last_days' in request.args:
-        return json.dumps({'err_msg': 'last_days must be specified!'})
-    last_days = request.args.get('last_days')
+    #if not 'last_days' in request.args:
+    #    return json.dumps({'err_msg': 'last_days must be specified!'})
+    #last_days = request.args.get('last_days')
 
     print('Get request with ticker=' + stock_ticker +
             ', last_days=' + last_days)
