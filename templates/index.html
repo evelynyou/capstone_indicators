@@ -38,13 +38,13 @@
         </div>
 
         <div class="tab">
-            <button class="tablinks active" onclick="openTab(event, 'howitworks')">How It Works</button>
-            <button class="tablinks" onclick="openTab(event, 'tryitout')">Try It Out!</button>
+            <button class="tablinks " onclick="openTab(event, 'howitworks')">How It Works</button>
+            <button class="tablinks active" onclick="openTab(event, 'tryitout')">Try It Out!</button>
             <button class="tablinks" onclick="openTab(event, 'indicators')">Trading Indicators</button>
             <button class="tablinks " onclick="openTab(event, 'aboutview')">About</button>
         </div> 
 
-        <div id="howitworks" class="tabcontent defaultTab">  
+        <div id="howitworks" class="tabcontent">  
             <div class="intro_header">
                 <h4>
                     <small>
@@ -59,7 +59,7 @@
             </div>  
         </div>
 
-        <div id="tryitout" class="tabcontent">  
+        <div id="tryitout" class="tabcontent defaultTab">  
             <div class='search_bar'>
                 Please input one stock ticker:
                 <input type="text" id="ticker"> 
