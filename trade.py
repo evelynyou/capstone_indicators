@@ -6,40 +6,13 @@ import numpy as np
 import json
 import logging
 
-from talib import abstract
 # directly import sma
-SMA = abstract.SMA
-import yfinance as yf
-from backtesting import Strategy
-from backtesting.lib import crossover, SignalStrategy, TrailingStrategy
-from backtesting import Backtest
+import get_data, backtest
 
 app = Flask(__name__)
 
 # NOTE: disable this after launch.
 CORS(app)
-
-class SmaCross(Strategy):
-    # Define the a MA lags as *class variables*
-    n1 = 3
-    n2 = 15
-    
-    def init(self):
-        # Precompute the moving averages
-        self.ma3 = self.I(SMA, self.data.Close, self.n1)
-        self.ma15 = self.I(SMA, self.data.Close, self.n2)
-            
-    def next(self):
-        # If Closing price crosses above sma
-        if crossover(self.ma3, self.ma15):
-            #self.position.close()
-            self.buy()
-
-        # Else, if Low price crosses below sma
-        elif crossover(self.ma15, self.ma3):
-            self.position.close()
-            #self.sell() # long-only
-
 
 # Return SMA backtesting result in JSON format, the high level
 # JSON structure is ['data': data , 'err_msg': error_message].
@@ -53,29 +26,28 @@ def backtest_sma():
     # Get stock tickers, return error message if it's not set.
     if not 'stock_ticker' in request.args:
         return json.dumps({'err_msg': 'stock_ticker must be specified!'})
-    stock_ticker = request.args.get('stock_ticker')
-    
+    ticker = request.args.get('stock_ticker')
+    stock_obj = get_data.yFinData(ticker)
     # Get last days to backtest, return error messsage if it's not set.
     # valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,3y,5y,10y,ytd,max 
     #if not 'last_days' in request.args:
     #    return json.dumps({'err_msg': 'last_days must be specified!'})
     #last_days = request.args.get('last_days')
 
-    print('Get request with ticker=' + stock_ticker +
-            ', last_days=' + last_days)
+    print('Get request with ticker=' + stock_ticker)
 
-    # Pull the stocks data
+    # Pull max stocks data
     try:
-        ydata = yf.download(stock_ticker, period=last_days)
+        ydata = stock_obj.get_ohlcv()
     except:
         logging.error('Uable to download data.')
         return json.dumps({'err_msg': 'uable to download stock data.'})
     
-    # Run backtesting
-    strategy = SmaCross
-    bt = Backtest(ydata, strategy, cash=10_000, commission=0)
-    stats = bt.run()
-
+    # backtest
+    backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ydata)
+    
+    # TODO: convert dataframe and dict to json digestables
+    
     #   - Convert result into JSON and return it.
     result = [{'key': field, 'value': str(stats[field])} for field in stats.keys()]
     ## Fake data for testing.
