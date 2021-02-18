@@ -1,11 +1,14 @@
 from backtesting import Backtest
 import inspect
+import pandas as pd
 import strats
+from typing import Tuple
+
 
 # Run backtesting
 avail_strats = [obj for name, obj in inspect.getmembers(strats, inspect.isclass) if obj.__module__ == 'strats']
 
-def backtest_with_all_strats(ydata: pd.DataFrame) -> pd.DataFrame, dict:
+def backtest_with_all_strats(ydata: pd.DataFrame) -> Tuple[pd.DataFrame, dict]:
     """
     backtest all strategies in strats.py
     input: stock OHLCV dataframe
