@@ -59,6 +59,23 @@ def backtest_sma():
 
     return json.dumps({'data': result, 'err_msg': 'OK'})
  
+@app.route("/how_it_works")
+def how_it_works():
+    print('In how it works')
+    #return 'Best Trading Indicators Ever!'
+    return render_template('how_it_works.html')
+
+@app.route("/indicators")
+def indicators():
+    print('In how it works')
+    #return 'Best Trading Indicators Ever!'
+    return render_template('indicators.html')
+
+@app.route("/about")
+def about():
+    print('In about')
+    #return 'Best Trading Indicators Ever!'
+    return render_template('about.html')    
 
 @app.route('/')
 def w210():
