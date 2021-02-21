@@ -48,6 +48,7 @@ def backtest_sma():
     
     # TODO: convert dataframe and dict to json digestables
     
+    
     #   - Convert result into JSON and return it.
     result = [{'key': field, 'value': str(stats[field])} for field in stats.keys()]
     ## Fake data for testing.

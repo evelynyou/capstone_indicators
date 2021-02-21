@@ -25,3 +25,4 @@ def backtest_with_all_strats(ydata: pd.DataFrame) -> pd.DataFrame, dict:
     strat_returns = pd.concat(temp, axis=1)
     strat_returns.columns = sname_temp
     return strat_returns, equity_trades
+
