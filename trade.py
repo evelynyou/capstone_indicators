@@ -50,14 +50,15 @@ def backtest_sma():
     
     
     #   - Convert result into JSON and return it.
-    result = [{'key': field, 'value': str(stats[field])} for field in stats.keys()]
+    #result = [{'key': field, 'value': str(stats[field])} for field in stats.keys()]
     ## Fake data for testing.
     #result = [{'key': 'Start',   'value': '2020-01-01'},
     #          {'key': 'End',     'value': '2020-02-09'},
     #          {'key': 'Gain',    'value': 10000},
     #          {'key': 'WinRate', 'value': 0.89}]
 
-    return json.dumps({'data': result, 'err_msg': 'OK'})
+    #return json.dumps({'data': result, 'err_msg': 'OK'})
+    return backtest_returns.to_json()
  
 @app.route("/how_it_works")
 def how_it_works():
