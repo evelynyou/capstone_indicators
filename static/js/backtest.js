@@ -8,7 +8,7 @@ function backtest() {
     console.log(ticker);
     console.log(data_url);
     
-    d3.json(base_url,
+    d3.json(data_url,
             function(err, data) {
                 if (err) throw err;
                 console.log(data);
