@@ -34,7 +34,7 @@ def backtest_sma():
     #    return json.dumps({'err_msg': 'last_days must be specified!'})
     #last_days = request.args.get('last_days')
 
-    print('Get request with ticker=' + stock_ticker)
+    print('Get request with ticker=' + ticker)
 
     # Pull max stocks data
     try:
