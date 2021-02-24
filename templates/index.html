@@ -33,20 +33,23 @@
         <div class="header">
             <h1> Assesment of Trading Indicators </h1>
             <i>
-                <p>test out the trading signals automatically...</p>
+                <p class='sub_header'> A handy tool to help you make informed trading decisions!</p>
             </i>
         </div>
 
         <div class="tab">
-            <button class="tablinks active" onclick="openTab(event, 'howitworks')">How It Works</button>
-            <button class="tablinks" onclick="openTab(event, 'tryitout')">Try It Out!</button>
+            <button class="tablinks " onclick="openTab(event, 'howitworks')">How It Works</button>
+            <button class="tablinks active" onclick="openTab(event, 'tryitout')">Try It Out!</button>
             <button class="tablinks" onclick="openTab(event, 'indicators')">Trading Indicators</button>
             <button class="tablinks " onclick="openTab(event, 'aboutview')">About</button>
         </div> 
 
-        <div id="howitworks" class="tabcontent defaultTab">  
+        <div id="howitworks" class="tabcontent">  
             <div class="intro_header">
-                <h4>
+                <!-- NOTE: adjust the width / height accordingly -->
+                <iframe frameborder="0" width="1200" height="3000" src="/how_it_works"> 
+                </iframe>
+
                     <small>
                         This tab explains how things works! <br>
                         This tab explains how things works! <br>
@@ -59,7 +62,7 @@
             </div>  
         </div>
 
-        <div id="tryitout" class="tabcontent">  
+        <div id="tryitout" class="tabcontent defaultTab">  
             <div class='search_bar'>
                 Please input one stock ticker:
                 <input type="text" id="ticker"> 
@@ -82,6 +85,10 @@
 
         <div id="indicators" class="tabcontent">   
             <div class="intro_header">
+                <!-- NOTE: adjust the width / height accordingly -->
+                <iframe frameborder="0" width="1200" height="3000" src="/indicators"> 
+                </iframe>
+
                 <h4>
                     <small>
                         Details about each indicators! <br> 
@@ -98,6 +105,10 @@
 
         <div id="aboutview" class="tabcontent">  
             <div class="intro_header">
+                <!-- NOTE: adjust the width / height accordingly -->
+                <iframe frameborder="0" width="1200" height="3000" src="/about"> 
+                </iframe>
+
                 <h4>
                     <small>
                         About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
