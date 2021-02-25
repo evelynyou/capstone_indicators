@@ -62,7 +62,7 @@ h3 {
 .tabcontent {
   display: none;
   padding: 6px 12px;
-  border-top: none;
+  border: 1px solid #ccc;
   width: 1200px;
   /* height: 850px; */
 }
@@ -75,4 +75,14 @@ h3 {
   margin-left: 100px;
   margin-right: 100px;
   /* text-align: left; */
+}
+
+.input_area {
+  padding: 15px;
+  text-align: right;
+}
+
+.render_button {
+  padding-top: 40px;
+  text-align: left;
 }

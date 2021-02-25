@@ -63,24 +63,18 @@
         </div>
 
         <div id="tryitout" class="tabcontent defaultTab">  
-            <div class='search_bar'>
-                Please input one stock ticker:
-                <input type="text" id="ticker"> 
-                <button class="search_button" onclick="backtest()"> Search </button>  
+            <div class='user_input_area'>
+                <div class='col-xs-12 col-md-6 input_area'> 
+                        Ticker: <input type="text" id="ticker" value="SPY"> <br>
+                          Cash: <input type="text" id="cash" value="10000.0"> <br>
+                    Commission: <input type="text" id="commission" value="0.0">  
+                </div>    
+                <div class='col-xs-12 col-md-6 render_button'>
+                    <button class="search_button" onclick="backtest()"> Check It Out! </button>  
+                </div>
             </div>
             <div id="indicator_table">
-            </div>
-
-            <div class="intro_header">
-                <h4>
-                    <small>
-                        Try it out! <br> 
-                        Input Box ! <br> 
-                        Table of Indicators! <br> 
-                        Link to detailed page! <br>
-                    </small>
-                </h4> 
-            </div>  
+            </div> 
         </div>
 
         <div id="indicators" class="tabcontent">   
