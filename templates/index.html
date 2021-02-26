@@ -69,9 +69,14 @@
                           Cash (USD): <input type="text" id="cash" value="10000.0"> <br>
                     Commission (USD): <input type="text" id="commission" value="0.0">  
                 </div>    
+
                 <div class='col-xs-12 col-md-6 render_button'>
                     <button class="search_button" onclick="backtest()"> Check It Out! </button>  
                 </div>
+
+                <!-- Explicitly call backtest() once to populate initial data -->
+                <!-- <script>backtest();</script>  -->
+                
             </div>
             <br>
 
@@ -98,9 +103,7 @@
                 <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
                 <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
                 <div class='col-xs-12 col-md-1 table_column'> Signals </div>  --> 
-            </div>  
-
-
+            </div>   
 
         </div>
 
