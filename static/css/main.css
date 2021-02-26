@@ -111,6 +111,21 @@ h3 {
   border: 1px solid #ccc; 
  }
 
+table thead,table tbody {
+    display: table-header-group;
+}
+
+table tbody {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    min-height: 90px;
+    max-height: 300px;
+}
+
+td, th {
+  max-width: auto;
+  text-align: left
+}
 
 
 
