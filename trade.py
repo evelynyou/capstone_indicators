@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import json
 import logging
+import strats
 
 # directly import sma
 import get_data, backtest
@@ -36,7 +37,7 @@ def run_backtests():
     cash = float(request.args.get('cash'))
 
     # Get commission
-    if not 'cash' in request.args:
+    if not 'commission' in request.args:
         return json.dumps({'err_msg': 'commission must be specified!'})
     commission = float(request.args.get('commission'))
 
@@ -61,6 +62,44 @@ def run_backtests():
             cash, commission)
     return backtest_returns.to_json()
 
+@app.route("/backtest_details")
+def backtest_details():
+    print('In backtest_details')
+
+    # Get tickers
+    if not 'stock_ticker' in request.args:
+        return json.dumps({'err_msg': 'stock_ticker must be specified!'})
+    ticker = request.args.get('stock_ticker')
+
+    # Get cash
+    if not 'cash' in request.args:
+        return json.dumps({'err_msg': 'cash must be specified!'})
+    cash = float(request.args.get('cash'))
+
+    # Get commission
+    if not 'commission' in request.args:
+        return json.dumps({'err_msg': 'commission must be specified!'})
+    commission = float(request.args.get('commission'))
+
+    stock_obj = get_data.yFinData(ticker)
+    # Get last days to backtest, return error messsage if it's not set.
+    # valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,3y,5y,10y,ytd,max 
+    #if not 'last_days' in request.args:
+    #    return json.dumps({'err_msg': 'last_days must be specified!'})
+    #last_days = request.args.get('last_days')
+
+    print('Get request with ticker=' + ticker)
+
+    # Pull max stocks data
+    try:
+        ydata = stock_obj.get_ohlcv()
+    except:
+        logging.error('Uable to download data.')
+        return json.dumps({'err_msg': 'uable to download stock data.'})
+    
+    # Raw HTML file in string format
+    return backtest.get_backtest_plot(ydata, strats.MacdSignal, cash, commission)
+
  
 @app.route("/how_it_works")
 def how_it_works():
@@ -71,7 +110,7 @@ def how_it_works():
 
 @app.route("/indicators")
 def indicators():
-    print('In how it works')
+    print('In indicators')
     #return 'Best Trading Indicators Ever!'
     return render_template('indicators.html')
 
