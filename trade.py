@@ -84,15 +84,15 @@ def backtest_details():
     # Get Strategy
     if not 'strategy' in request.args:
         return json.dumps({'err_msg': 'staregy must be specified!'})
-    strategy = float(request.args.get('strategy'))
+    strategy = request.args.get('strategy')
 
     strategy_map = {
-            "MACD": strats.MacdSignal,
-            "SMA": strats.SmaCross,
-            "RSI": strats.RsiSignal,
-            "StoOsci": strats.StochOsci,
-            "StoRsi": strats.StochRsi
-            }
+            "MacdSignal": strats.MacdSignal,
+            "SmaCross": strats.SmaCross,
+            "RsiSignal": strats.RsiSignal,
+            "StochOsci": strats.StochOsci,
+            "StochRsi": strats.StochRsi
+    }
 
 
     stock_obj = get_data.yFinData(ticker)
@@ -102,7 +102,7 @@ def backtest_details():
     #    return json.dumps({'err_msg': 'last_days must be specified!'})
     #last_days = request.args.get('last_days')
 
-    print('Get request with ticker=' + ticker)
+    print('Get request with ticker=' + ticker + ",strategy=" + strategy)
 
     # Pull max stocks data
     try:

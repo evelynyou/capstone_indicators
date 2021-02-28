@@ -1,7 +1,8 @@
 /* Handle the search button click */
 
 function backtest() {  
-    base_url = "http://ec2-100-20-59-199.us-west-2.compute.amazonaws.com:8888/backtest?stock_ticker=";
+    // base_url = "http://ec2-100-20-59-199.us-west-2.compute.amazonaws.com:8888/backtest?stock_ticker=";
+    base_url = "/backtest?stock_ticker=";
     
     ticker = document.getElementById("ticker").value;
     cash = document.getElementById("cash").value;
@@ -25,9 +26,9 @@ function backtest() {
                 // document.getElementById("indicator_table").innerHTML = JSON.stringify(data); 
                 
                 // Metrics we care about.
-                var metrics = ["# Trades", "Return [%]", "Return (Ann.) [%]", "Exposure Time [%]", "Volatility (Ann.) [%]",
-                               "Max. Drawdown [%]", "Avg. Drawdown [%]", "Sharpe Ratio", "Sortino Ratio", 
-                               "Calmar Ratio"];
+                var metrics = ["# Trades", "Return [%]", "Return (Ann.) [%]", "Exposure Time [%]",
+			"Volatility (Ann.) [%]", "Max. Drawdown [%]", "Avg. Drawdown [%]",
+			"Sharpe Ratio", "Sortino Ratio", "Calmar Ratio"];
 
                 // Create table and set up the headers
                 var table_body =  populate_header();
@@ -81,6 +82,11 @@ function populate_signal(tbody,  // table body to append rows
                 strategy_keyname.concat("_2016"), strategy_keyname.concat("_2017"), strategy_keyname.concat("_2018"),
                 strategy_keyname.concat("_2019"), strategy_keyname.concat("_2020")]; 
 
+
+    ticker = document.getElementById("ticker").value;
+    cash = document.getElementById("cash").value;
+    commission = document.getElementById("commission").value;
+
     for (var i = 0; i < metrics.length; i++) {
         // Append one row for each metric
         var tbody_tr = tbody.append("tr");
@@ -110,7 +116,20 @@ function populate_signal(tbody,  // table body to append rows
 
         // Add details column
         if (i == 0) {
-          tbody_tr.append("td").attr("rowspan", metrics.length).attr("class", 'table_cell').text("Details");
+	  detail_page_url = "/backtest_details?stock_ticker=";
+          detail_page_url = detail_page_url.concat(ticker);
+          detail_page_url = detail_page_url.concat("&cash=");
+          detail_page_url = detail_page_url.concat(cash);
+          detail_page_url = detail_page_url.concat("&commission=");
+          detail_page_url = detail_page_url.concat(commission);
+          detail_page_url = detail_page_url.concat("&strategy=");
+          detail_page_url = detail_page_url.concat(strategy_keyname);
+          var cell_text = "<a href=";
+	  cell_text = cell_text.concat(detail_page_url);
+          cell_text = cell_text.concat(" target=_blank>Details</a>");
+	  console.log(cell_text);
+          tbody_tr.append("td").attr("rowspan", metrics.length)
+			.attr("class", 'table_cell').html(cell_text);
 	}
     }  
 }  
