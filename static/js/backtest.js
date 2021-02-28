@@ -55,16 +55,16 @@ function populate_header() {
     thead_tr.append("th").attr("class", 'table_header_cell').text("Strategy");
     thead_tr.append("th").attr("class", 'table_header_cell').text("Parameters");
     thead_tr.append("th").attr("class", 'table_header_cell').text("Metric");
-    thead_tr.append("th").attr("class", 'table_header_cell').text("6-Month");
 
+    thead_tr.append("th").attr("class", 'table_header_cell').text("6-Month");
     thead_tr.append("th").attr("class", 'table_header_cell').text("1-Year");
     thead_tr.append("th").attr("class", 'table_header_cell').text("2-Year");
-    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2016");
-    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2017");
 
-    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2018");
-    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2019");
     thead_tr.append("th").attr("class", 'table_header_cell').text("CY2020"); 
+    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2019");
+    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2018");
+    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2017");
+    thead_tr.append("th").attr("class", 'table_header_cell').text("CY2016");
     thead_tr.append("th").attr("class", 'table_header_cell').text("Details"); 
     
     // Return the table body to append rows.
@@ -79,8 +79,8 @@ function populate_signal(tbody,  // table body to append rows
                          strategy_displayname) {   
     
     var keys = [strategy_keyname.concat("_0.5"), strategy_keyname.concat("_1"), strategy_keyname.concat("_2"),
-                strategy_keyname.concat("_2016"), strategy_keyname.concat("_2017"), strategy_keyname.concat("_2018"),
-                strategy_keyname.concat("_2019"), strategy_keyname.concat("_2020")]; 
+                strategy_keyname.concat("_2020"), strategy_keyname.concat("_2019"), strategy_keyname.concat("_2018"),
+                strategy_keyname.concat("_2017"), strategy_keyname.concat("_2016")]; 
 
 
     ticker = document.getElementById("ticker").value;
