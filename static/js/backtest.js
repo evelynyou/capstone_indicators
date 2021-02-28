@@ -25,7 +25,7 @@ function backtest() {
                 // document.getElementById("indicator_table").innerHTML = JSON.stringify(data); 
                 
                 // Metrics we care about.
-                var metrics = ["Return [%]", "Return (Ann.) [%]", "Exposure Time [%]", "Volatility (Ann.) [%]",
+                var metrics = ["# Trades", "Return [%]", "Return (Ann.) [%]", "Exposure Time [%]", "Volatility (Ann.) [%]",
                                "Max. Drawdown [%]", "Avg. Drawdown [%]", "Sharpe Ratio", "Sortino Ratio", 
                                "Calmar Ratio"];
 
@@ -109,7 +109,9 @@ function populate_signal(tbody,  // table body to append rows
         }
 
         // Add details column
-        tbody_tr.append("td").attr("class", 'table_cell').text("Details");
+        if (i == 0) {
+          tbody_tr.append("td").attr("rowspan", metrics.length).attr("class", 'table_cell').text("Details");
+	}
     }  
 }  
 
