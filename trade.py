@@ -81,6 +81,20 @@ def backtest_details():
         return json.dumps({'err_msg': 'commission must be specified!'})
     commission = float(request.args.get('commission'))
 
+    # Get Strategy
+    if not 'strategy' in request.args:
+        return json.dumps({'err_msg': 'staregy must be specified!'})
+    strategy = float(request.args.get('strategy'))
+
+    strategy_map = {
+            "MACD": strats.MacdSignal,
+            "SMA": strats.SmaCross,
+            "RSI": strats.RsiSignal,
+            "StoOsci": strats.StochOsci,
+            "StoRsi": strats.StochRsi
+            }
+
+
     stock_obj = get_data.yFinData(ticker)
     # Get last days to backtest, return error messsage if it's not set.
     # valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,3y,5y,10y,ytd,max 
@@ -98,7 +112,7 @@ def backtest_details():
         return json.dumps({'err_msg': 'uable to download stock data.'})
     
     # Raw HTML file in string format
-    return backtest.get_backtest_plot(ydata, strats.MacdSignal, cash, commission)
+    return backtest.get_backtest_plot(ydata, strategy_map[strategy], cash, commission)
 
  
 @app.route("/how_it_works")

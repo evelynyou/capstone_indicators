@@ -44,8 +44,8 @@ def test_backtest():
 
 def test_backtest_details():
     ticker = "SPY"
-    cash = "10000.0"
-    commission = "0.0"
+    cash = 10000.0
+    commission = 0.0
 
     stock_obj = get_data.yFinData(ticker)
     # Get last days to backtest, return error messsage if it's not set.
@@ -69,7 +69,7 @@ def test_backtest_details():
     # <class 'strats.SmaCross'>
     # <class 'strats.StochOsci'>
     # <class 'strats.StochRsi'>
-    plot = backtest.get_backtest_plot(ydata, strats.MacdSignal(), cash, commission)
+    plot = backtest.get_backtest_plot(ydata, strats.MacdSignal, cash, commission)
     print(type(plot))
     print(str(plot))
 
