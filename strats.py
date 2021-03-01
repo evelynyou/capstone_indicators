@@ -11,6 +11,14 @@ STOCH = abstract.STOCH
 STOCHRSI = abstract.STOCHRSI
 
 
+class BuyAndHold(Strategy):
+    # This strategy actually starts at day 2 of the time period because of the next() method
+    # Making it more comparable as a control for the rest of the strategies
+    def init(self):
+        next
+    def next(self):
+        self.buy()
+
 class SmaCross(Strategy):
     # Define parameters of the strategy
     fast = 3
