@@ -5,16 +5,9 @@ function backtest() {
     base_url = "/backtest?stock_ticker=";
     
     ticker = document.getElementById("ticker").value;
-    cash = document.getElementById("cash").value;
-    commission = document.getElementById("commission").value;
-    
-    data_url = base_url.concat(ticker)
-                .concat("&cash=").concat(cash)
-                .concat("&commission=").concat(commission);
+    data_url = base_url.concat(ticker);
 
     console.log(ticker);
-    console.log(cash);
-    console.log(commission); 
     console.log(data_url); 
 
     // https://bl.ocks.org/d3noob/473f0cf66196a008cf99 
@@ -26,7 +19,7 @@ function backtest() {
                 // document.getElementById("indicator_table").innerHTML = JSON.stringify(data); 
                 
                 // Metrics we care about.
-                var metrics = ["# Trades", "Return [%]", "Return (Ann.) [%]", "Exposure Time [%]",
+                var metrics = ["Return [%]", "Return (Ann.) [%]", "Exposure Time [%]", "Win Rate [%]", "# Trades",
 			"Volatility (Ann.) [%]", "Max. Drawdown [%]", "Avg. Drawdown [%]",
 			"Sharpe Ratio", "Sortino Ratio", "Calmar Ratio"];
 
@@ -84,8 +77,6 @@ function populate_signal(tbody,  // table body to append rows
 
 
     ticker = document.getElementById("ticker").value;
-    cash = document.getElementById("cash").value;
-    commission = document.getElementById("commission").value;
 
     for (var i = 0; i < metrics.length; i++) {
         // Append one row for each metric
@@ -118,10 +109,6 @@ function populate_signal(tbody,  // table body to append rows
         if (i == 0) {
 	  detail_page_url = "/backtest_details?stock_ticker=";
           detail_page_url = detail_page_url.concat(ticker);
-          detail_page_url = detail_page_url.concat("&cash=");
-          detail_page_url = detail_page_url.concat(cash);
-          detail_page_url = detail_page_url.concat("&commission=");
-          detail_page_url = detail_page_url.concat(commission);
           detail_page_url = detail_page_url.concat("&strategy=");
           detail_page_url = detail_page_url.concat(strategy_keyname);
           var cell_text = "<a href=";

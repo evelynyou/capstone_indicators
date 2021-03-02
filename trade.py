@@ -31,15 +31,8 @@ def run_backtests():
         return json.dumps({'err_msg': 'stock_ticker must be specified!'})
     ticker = request.args.get('stock_ticker')
 
-    # Get cash
-    if not 'cash' in request.args:
-        return json.dumps({'err_msg': 'cash must be specified!'})
-    cash = float(request.args.get('cash'))
-
-    # Get commission
-    if not 'commission' in request.args:
-        return json.dumps({'err_msg': 'commission must be specified!'})
-    commission = float(request.args.get('commission'))
+    cash = 1000000.0
+    commission = 0.0 
 
     stock_obj = get_data.yFinData(ticker)
     # Get last days to backtest, return error messsage if it's not set.
