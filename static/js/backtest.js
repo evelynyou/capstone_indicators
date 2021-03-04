@@ -27,9 +27,10 @@ function backtest() {
                 var table_body =  populate_header();
 
                 // Append rows for indicators
-                populate_signal(table_body, data, metrics, "MacdSignal", "MACD Signal");  
-                populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
+                populate_signal(table_body, data, metrics, "BuyAndHold", "Buy and Hold");  
                 populate_signal(table_body, data, metrics, "SmaCross", "SMA Cross"); 
+                populate_signal(table_body, data, metrics, "MacdSignal", "MACD Signal");  
+                //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
                 populate_signal(table_body, data, metrics, "StochOsci", "Stochastic Oscillator"); 
                 populate_signal(table_body, data, metrics, "StochRsi", "Stochastic RSI"); 
             }
