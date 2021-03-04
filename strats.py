@@ -1,26 +1,22 @@
-from talib import abstract
 from backtesting import Strategy
 from backtesting.lib import crossover
-
-# directly import strategies
-SMA = abstract.SMA
-EMA = abstract.EMA
-MACD = abstract.MACD
-RSI = abstract.RSI
-STOCH = abstract.STOCH
-STOCHRSI = abstract.STOCHRSI
+import numpy as np
+import indicators as ind
 
 
 class SmaCross(Strategy):
     # Define parameters of the strategy
-    fast = 3
+    fast = 5
     slow = 15
     long_only = 1
-    
     def init(self):
         # Compute moving averages
-        self.fast_sma = self.I(SMA, self.data.Close, self.fast)
-        self.slow_sma = self.I(SMA, self.data.Close, self.slow)
+        if np.prod([isinstance(param, int) for param in [self.fast, self.slow]]):
+            self.fast_sma = self.I(ind.SMA, self.data.Close, self.fast)
+            self.slow_sma = self.I(ind.SMA, self.data.Close, self.slow)
+        else:
+            self.fast_sma = self.I(ind.modCloseStrategy, ind.SMA, self.data.Close, self.fast)
+            self.slow_sma = self.I(ind.modCloseStrategy, ind.SMA, self.data.Close, self.slow)
             
     def next(self):
         # If fast SMA crosses above slow SMA
@@ -45,8 +41,12 @@ class MacdSignal(Strategy):
     
     def init(self):
         # Compute MACD
-        self.macd, self.macdsignal, self.macdhist = self.I(
-             MACD, self.data.Close, self.fastperiod, self.slowperiod, self.signalperiod)
+        if np.prod([isinstance(param, int) for param in [self.fastperiod, self.slowperiod, self.signalperiod]]):
+            self.macd, self.macdsignal, self.macdhist = self.I(
+                 ind.MACD, self.data.Close, self.fastperiod, self.slowperiod, self.signalperiod)
+        else:
+            self.macd, self.macdsignal, self.macdhist = self.I(
+                 ind.modCloseStrategy, ind.MACD, self.data.Close, self.fastperiod, self.slowperiod, self.signalperiod)  
         
     def next(self):
         # If MACD crosses above signal line
@@ -71,7 +71,10 @@ class RsiSignal(Strategy):
     
     def init(self):
         # Compute RSI
-        self.real = self.I(RSI, self.data.Close, self.timeperiod)
+        if np.prod([isinstance(param, int) for param in [self.timeperiod]]):
+            self.real = self.I(ind.RSI, self.data.Close, self.timeperiod)
+        else:
+            self.real = self.I(ind.modCloseStrategy, ind.RSI, self.data.Close, self.timeperiod)
         
     def next(self):
         # If RSI enters oversold territory
@@ -100,9 +103,15 @@ class StochOsci(Strategy):
     
     def init(self):
         # Compute K and D lines
-        self.slowk, self.slowd = self.I(STOCH, self.data.High, self.data.Low, self.data.Close, 
-                                        self.fastk_period, self.slowk_period, self.slowk_matype, 
-                                        self.slowd_period, self.slowd_matype)
+        if np.prod([isinstance(param, int) for param in [self.fastk_period, self.slowk_period,
+                                                         self.slowk_matype, self.slowd_period, self.slowd_matype]]):
+            self.slowk, self.slowd = self.I(ind.STOCH, self.data.High, self.data.Low, self.data.Close, 
+                                            self.fastk_period, self.slowk_period, self.slowk_matype, 
+                                            self.slowd_period, self.slowd_matype)
+        else:
+            self.slowk, self.slowd = self.I(ind.modHLCStrategy, ind.STOCH, self.data.High, self.data.Low, self.data.Close, 
+                                            self.fastk_period, self.slowk_period, self.slowk_matype, 
+                                            self.slowd_period, self.slowd_matype)
         
     def next(self):
         # If K and D enter oversold territory
@@ -130,9 +139,14 @@ class StochRsi(Strategy):
     
     def init(self):
         # Compute K and D lines
-        self.fastk, self.fastd = self.I(STOCHRSI, self.data.Close, self.timeperiod,
-                                        self.fastk_period, self.fastd_period, self.fastd_matype)
-        
+        if np.prod([isinstance(param, int) for param in [self.timeperiod, self.fastk_period, 
+                                                         self.fastd_period, self.fastd_matype]]):
+            self.fastk, self.fastd = self.I(ind.STOCHRSI, self.data.Close, self.timeperiod,
+                                            self.fastk_period, self.fastd_period, self.fastd_matype)
+        else:
+            self.fastk, self.fastd = self.I(ind.modCloseStrategy, ind.STOCHRSI, self.data.Close, self.timeperiod,
+                                            self.fastk_period, self.fastd_period, self.fastd_matype)
+            
     def next(self):
         # If K and D enter oversold territory
         if self.fastk < self.oversold and self.fastd < self.oversold:
