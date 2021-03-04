@@ -76,6 +76,38 @@ function populate_signal(tbody,  // table body to append rows
                 strategy_keyname.concat("_2020"), strategy_keyname.concat("_2019"), strategy_keyname.concat("_2018"),
                 strategy_keyname.concat("_2017"), strategy_keyname.concat("_2016")]; 
 
+    var details_map = {
+	    "BuyAndHold": "",
+	    "SmaCross": `<div style="text-align:center">
+	                    Short SMA <br> <input type='text' id='sma_short_sma' value='3' style='background-color:#ccc;' readonly>  <br>
+	                    Long SMA <br> <input type='text' id='sma_long_sma' value='15' style='background-color:#ccc;' readonly> <br>
+	                    Long Only <br> <input type='text' id='sma_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                 </div>`,
+	    "MacdSignal": `<div style="text-align:center">
+	                    Fast Period <br> <input type='text' id='macd_fast_period' value='12' style='background-color:#ccc;' readonly>  <br>
+	                    Slow Period <br> <input type='text' id='macd_slow_period' value='26' style='background-color:#ccc;' readonly> <br>
+	                    Signal Period <br> <input type='text' id='macd_signal_period' value='9' style='background-color:#ccc;' readonly> <br>
+	                    Long Only <br> <input type='text' id='macd_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                 </div>`,
+	    "StochOsci": `<div style="text-align:center">
+	                    Fast K Period <br> <input type='text' id='osci_fast_k_period' value='14' style='background-color:#ccc;' readonly>  <br>
+	                    Slow K Period <br> <input type='text' id='osci_slow_k_period' value='3' style='background-color:#ccc;' readonly> <br>
+	                    Slow D Period <br> <input type='text' id='osci_slow_d_period' value='3' style='background-color:#ccc;' readonly> <br>
+	                    Overbought <br> <input type='text' id='osci_overbought' value='80' style='background-color:#ccc;' readonly> <br>
+	                    Oversold <br> <input type='text' id='osci_oversold' value='20' style='background-color:#ccc;' readonly> <br>
+	                    Long Only <br> <input type='text' id='osci_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                 </div>`,
+	    "StochRsi": `<div style="text-align:center">
+	                    Time Period <br> <input type='text' id='rsi_time_period' value='14' style='background-color:#ccc;' readonly>  <br>
+	                    Fast K Period <br> <input type='text' id='rsi_fast_k_period' value='14' style='background-color:#ccc;' readonly> <br>
+	                    Fast D Period <br> <input type='text' id='rsi_fast_d_period' value='3' style='background-color:#ccc;' readonly> <br>
+	                    Overbought <br> <input type='text' id='rsi_overbought' value='80' style='background-color:#ccc;' readonly> <br>
+	                    Oversold <br> <input type='text' id='rsi_oversold' value='20' style='background-color:#ccc;' readonly> <br>
+	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                 </div>`
+    };
+
+
 
     ticker = document.getElementById("ticker").value;
 
@@ -87,7 +119,8 @@ function populate_signal(tbody,  // table body to append rows
         // Add Strategy, Parameters, just one row for each strategy.
         if (i == 0) {
           tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", 'table_cell').text(strategy_displayname);
-          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", 'table_cell').text("Parameters");
+          details_html = details_map[strategy_keyname];
+          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", 'table_cell').html(details_html);
         }
 
         // Current metric
