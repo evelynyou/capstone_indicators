@@ -24,8 +24,8 @@
 
     <!-- JS to do the tab switch -->
     <script src="/static/js/tab.js"></script>
-    <script src="/static/js/backtest.js"></script>
-    
+    <script src="/static/js/backtest.js"></script> 
+
 </head>
 
 <body>
@@ -63,24 +63,46 @@
         </div>
 
         <div id="tryitout" class="tabcontent defaultTab">  
-            <div class='search_bar'>
-                Please input one stock ticker:
-                <input type="text" id="ticker"> 
-                <button class="search_button" onclick="backtest()"> Search </button>  
+            <div class='user_input_area  col-xs-12 col-md-12 '>
+                <div class='col-xs-12 col-md-6 input_area'> 
+                        Ticker: <input type="text" id="ticker" value="SPY"> <br>
+                </div>    
+
+                <div class='col-xs-12 col-md-6 render_button'>
+                    <button class="search_button" onclick="backtest()"> Check It Out! </button>  
+                </div>
+
+                <!-- Explicitly call backtest() once to populate initial data -->
+                <!-- <script>backtest();</script>  -->
+                
             </div>
-            <div id="indicator_table">
+            <br>
+
+            <div class="col-xs-12 col-md-12" id="indicator_table">
+                <!-- Indicators table will be created here -->
             </div>
 
-            <div class="intro_header">
-                <h4>
-                    <small>
-                        Try it out! <br> 
-                        Input Box ! <br> 
-                        Table of Indicators! <br> 
-                        Link to detailed page! <br>
-                    </small>
-                </h4> 
-            </div>  
+            
+            <div class="col-xs-12 col-md-12" id="buy_and_hold"> 
+                <hr>
+                Copyright @ W210 StockSense
+                <hr>
+             <!--    <div class='col-xs-12 col-md-1 table_column'> Strategy </div>
+                <div class='col-xs-12 col-md-1 table_column'> Parameters </div>
+                <div class='col-xs-12 col-md-1 table_column'> Metric </div>
+                <div class='col-xs-12 col-md-1 table_column'> 6-Month</div>
+
+                <div class='col-xs-12 col-md-1 table_column'> 1-Year </div>
+                <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
+                <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
+                <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
+                
+                <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
+                <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
+                <div class='col-xs-12 col-md-1 table_column'> 2-Year </div>
+                <div class='col-xs-12 col-md-1 table_column'> Signals </div>  --> 
+            </div>   
+
         </div>
 
         <div id="indicators" class="tabcontent">   
@@ -88,18 +110,6 @@
                 <!-- NOTE: adjust the width / height accordingly -->
                 <iframe frameborder="0" width="1200" height="3000" src="/indicators"> 
                 </iframe>
-
-                <h4>
-                    <small>
-                        Details about each indicators! <br> 
-                        Details about each indicators! <br> 
-                        Details about each indicators! <br> 
-                        Details about each indicators! <br> 
-                        Details about each indicators! <br> 
-                        Details about each indicators! <br> 
-                        Details about each indicators! <br> 
-                    </small>
-                </h4> 
             </div>  
         </div>
 
@@ -108,18 +118,6 @@
                 <!-- NOTE: adjust the width / height accordingly -->
                 <iframe frameborder="0" width="1200" height="3000" src="/about"> 
                 </iframe>
-
-                <h4>
-                    <small>
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                        About Page! / Disclaimer / The Team / Term of Usage, etc <br> 
-                    </small>
-                </h4> 
             </div>  
         </div> 
 

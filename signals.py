@@ -34,6 +34,7 @@ def generate_signals(df: pd.DataFrame) -> pd.DataFrame:
     df["SMA20"] = SMA(df.Close, 20)
     df["SMA30"] = SMA(df.Close, 30)
     df["SMA50"] = SMA(df.Close, 50)
+    
     # Add exponential moving averages (EMAs)
     # More info: https://www.investopedia.com/terms/e/ema.asp
     df["EMA3"] = EMA(df.Close, 3)
@@ -43,6 +44,7 @@ def generate_signals(df: pd.DataFrame) -> pd.DataFrame:
     df["EMA20"] = EMA(df.Close, 20)
     df["EMA30"] = EMA(df.Close, 30)
     df["EMA50"] = EMA(df.Close, 50)
+    
     # Add pivot point (PP) and classical support and resistance pivot points
     # More info: https://www.investopedia.com/terms/p/pivotpoint.asp
     df["PP"] = (df.High + df.Low + df.Close) / 3
@@ -52,6 +54,7 @@ def generate_signals(df: pd.DataFrame) -> pd.DataFrame:
     df["R1C"] = df.PP * 2 - df.Low 
     df["R2C"] = df.PP + (df.High - df.Low)
     df["R3C"] = df.High + 2 * (df.PP - df.Low)
+    
     # Add Fibonacci support and resistance pivot points
     # More info: https://www.interactivebrokers.com/en/software/tws/usersguidebook/technicalanalytics/fibonaccipivotpoints.htm
     df["S1F"] = df.PP - 0.382 * (df.High - df.Low)
@@ -66,10 +69,12 @@ def generate_signals(df: pd.DataFrame) -> pd.DataFrame:
     sma_slow = SMA(df.Close, 15)
     sma_signal = pd.Series(sma_fast > sma_slow).astype(int).diff().fillna(0)
     df["SMA_Signal"] = sma_signal.values
+    
     # Add MACD Signal
     macd, macdsignal, macdhist = MACD(df.Close, fastperiod=12, slowperiod=26, signalperiod=9)
     macd_signal = pd.Series(macd > macdsignal).astype(int).diff().fillna(0)
     df["MACD_Signal"] = macd_signal.values
+    
     # Add RSI Level and Signal
     real = RSI(df.Close, timeperiod=14)
     df["RSI"] = real
@@ -79,6 +84,7 @@ def generate_signals(df: pd.DataFrame) -> pd.DataFrame:
     sell_signal = pd.Series(real >= overbought).astype(int) * -1
     rsi_signal = buy_signal + sell_signal
     df["RSI_Signal"] = rsi_signal.values
+    
     # Add Stochastic Oscillator levels
     slowk, slowd = STOCH(df.High, df.Low, df.Close, 
                          fastk_period=5, slowk_period=3, 

@@ -3,6 +3,8 @@ import inspect
 import pandas as pd
 import strats
 from typing import Tuple
+import time
+
 
 
 # Run backtesting
@@ -44,8 +46,11 @@ def get_backtest_plot(ydata, strat, cash=10_000, commission=0.):
     """
     bt = Backtest(ydata, strat, cash=cash, commission=commission)
     stats = bt.run()
-    return bt.plot()
+    # Save plots to file
+    filename = "./tmp_plots/" + str(time.time()) + ".html"
+    bt.plot(filename = filename)
+    # Conver it to string
+    with open(filename, 'r') as file:
+        data = file.read().replace('\n', '')
+    return data
 
-
-    
-    

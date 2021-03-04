@@ -4,6 +4,14 @@ import numpy as np
 import indicators as ind
 
 
+class BuyAndHold(Strategy):
+    # This strategy actually starts at day 2 of the time period because of the next() method
+    # Making it more comparable as a control for the rest of the strategies
+    def init(self):
+        next
+    def next(self):
+        self.buy()
+
 class SmaCross(Strategy):
     # Define parameters of the strategy
     fast = 5
@@ -92,7 +100,7 @@ class RsiSignal(Strategy):
     
 class StochOsci(Strategy): 
     # Define parameters of the strategy
-    fastk_period = 5
+    fastk_period = 14
     slowk_period = 3
     slowk_matype = 0
     slowd_period = 3
@@ -130,7 +138,7 @@ class StochOsci(Strategy):
 class StochRsi(Strategy): 
     # Define parameters of the strategy
     timeperiod = 14
-    fastk_period = 5
+    fastk_period = 14
     fastd_period = 3
     fastd_matype = 0
     overbought = 80
