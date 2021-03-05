@@ -28,11 +28,16 @@ function backtest() {
 
                 // Append rows for indicators
                 populate_signal(table_body, data, metrics, "BuyAndHold", "Buy and Hold", "table_cell_0");  
+                add_table_separator(table_body);
                 populate_signal(table_body, data, metrics, "SmaCross", "SMA Cross", "table_cell_1"); 
+                add_table_separator(table_body);
                 populate_signal(table_body, data, metrics, "MacdSignal", "MACD Signal", "table_cell_0");  
-                //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
+                add_table_separator(table_body);
                 populate_signal(table_body, data, metrics, "StochOsci", "Stochastic Oscillator", "table_cell_1"); 
+                add_table_separator(table_body);
                 populate_signal(table_body, data, metrics, "StochRsi", "Stochastic RSI", "table_cell_0"); 
+
+                //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
             }
     );
 } 
@@ -65,6 +70,13 @@ function populate_header() {
     var tbody = table.append("tbody");
     return tbody;
 } 
+
+function add_table_separator(tbody) {
+  var tbody_tr = tbody.append("tr");
+  var sep = "---------------------------------------------------------------------------------";
+  sep = sep.concat(sep).concat(sep);
+  tbody_tr.append("td").attr("colspan", "12").attr("class", "table_separator").text(sep);
+}
 
 function populate_signal(tbody,  // table body to append rows
                          data,   // data
