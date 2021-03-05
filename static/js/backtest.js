@@ -27,12 +27,12 @@ function backtest() {
                 var table_body =  populate_header();
 
                 // Append rows for indicators
-                populate_signal(table_body, data, metrics, "BuyAndHold", "Buy and Hold");  
-                populate_signal(table_body, data, metrics, "SmaCross", "SMA Cross"); 
-                populate_signal(table_body, data, metrics, "MacdSignal", "MACD Signal");  
+                populate_signal(table_body, data, metrics, "BuyAndHold", "Buy and Hold", "table_cell_0");  
+                populate_signal(table_body, data, metrics, "SmaCross", "SMA Cross", "table_cell_1"); 
+                populate_signal(table_body, data, metrics, "MacdSignal", "MACD Signal", "table_cell_0");  
                 //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
-                populate_signal(table_body, data, metrics, "StochOsci", "Stochastic Oscillator"); 
-                populate_signal(table_body, data, metrics, "StochRsi", "Stochastic RSI"); 
+                populate_signal(table_body, data, metrics, "StochOsci", "Stochastic Oscillator", "table_cell_1"); 
+                populate_signal(table_body, data, metrics, "StochRsi", "Stochastic RSI", "table_cell_0"); 
             }
     );
 } 
@@ -70,7 +70,8 @@ function populate_signal(tbody,  // table body to append rows
                          data,   // data
                          metrics,  // metrics to show
                          strategy_keyname,
-                         strategy_displayname) {   
+                         strategy_displayname,
+                         cell_class) {   // CSS style class for table cell 
     
     var keys = [strategy_keyname.concat("_0.5"), strategy_keyname.concat("_1"), strategy_keyname.concat("_2"),
                 strategy_keyname.concat("_2020"), strategy_keyname.concat("_2019"), strategy_keyname.concat("_2018"),
@@ -79,31 +80,31 @@ function populate_signal(tbody,  // table body to append rows
     var details_map = {
 	    "BuyAndHold": "",
 	    "SmaCross": `<div style="text-align:center">
-	                    Short SMA <br> <input type='text' id='sma_short_sma' value='3' style='background-color:#ccc;' readonly>  <br>
-	                    Long SMA <br> <input type='text' id='sma_long_sma' value='15' style='background-color:#ccc;' readonly> <br>
-	                    Long Only <br> <input type='text' id='sma_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                    Short SMA <br> <input type='text' id='sma_short_sma' value='3' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+	                    Long SMA <br> <input type='text' id='sma_long_sma' value='15' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Long Only <br> <input type='text' id='sma_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
 	                 </div>`,
 	    "MacdSignal": `<div style="text-align:center">
-	                    Fast Period <br> <input type='text' id='macd_fast_period' value='12' style='background-color:#ccc;' readonly>  <br>
-	                    Slow Period <br> <input type='text' id='macd_slow_period' value='26' style='background-color:#ccc;' readonly> <br>
-	                    Signal Period <br> <input type='text' id='macd_signal_period' value='9' style='background-color:#ccc;' readonly> <br>
-	                    Long Only <br> <input type='text' id='macd_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                    Fast Period <br> <input type='text' id='macd_fast_period' value='12' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+	                    Slow Period <br> <input type='text' id='macd_slow_period' value='26' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Signal Period <br> <input type='text' id='macd_signal_period' value='9' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Long Only <br> <input type='text' id='macd_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
 	                 </div>`,
 	    "StochOsci": `<div style="text-align:center">
-	                    Fast K Period <br> <input type='text' id='osci_fast_k_period' value='14' style='background-color:#ccc;' readonly>  <br>
-	                    Slow K Period <br> <input type='text' id='osci_slow_k_period' value='3' style='background-color:#ccc;' readonly> <br>
-	                    Slow D Period <br> <input type='text' id='osci_slow_d_period' value='3' style='background-color:#ccc;' readonly> <br>
-	                    Overbought <br> <input type='text' id='osci_overbought' value='80' style='background-color:#ccc;' readonly> <br>
-	                    Oversold <br> <input type='text' id='osci_oversold' value='20' style='background-color:#ccc;' readonly> <br>
-	                    Long Only <br> <input type='text' id='osci_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                    Fast K Period <br> <input type='text' id='osci_fast_k_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+	                    Slow K Period <br> <input type='text' id='osci_slow_k_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Slow D Period <br> <input type='text' id='osci_slow_d_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Overbought <br> <input type='text' id='osci_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Oversold <br> <input type='text' id='osci_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Long Only <br> <input type='text' id='osci_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
 	                 </div>`,
 	    "StochRsi": `<div style="text-align:center">
-	                    Time Period <br> <input type='text' id='rsi_time_period' value='14' style='background-color:#ccc;' readonly>  <br>
-	                    Fast K Period <br> <input type='text' id='rsi_fast_k_period' value='14' style='background-color:#ccc;' readonly> <br>
-	                    Fast D Period <br> <input type='text' id='rsi_fast_d_period' value='3' style='background-color:#ccc;' readonly> <br>
-	                    Overbought <br> <input type='text' id='rsi_overbought' value='80' style='background-color:#ccc;' readonly> <br>
-	                    Oversold <br> <input type='text' id='rsi_oversold' value='20' style='background-color:#ccc;' readonly> <br>
-	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#ccc;' readonly>
+	                    Time Period <br> <input type='text' id='rsi_time_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+	                    Fast K Period <br> <input type='text' id='rsi_fast_k_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Fast D Period <br> <input type='text' id='rsi_fast_d_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Overbought <br> <input type='text' id='rsi_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Oversold <br> <input type='text' id='rsi_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
 	                 </div>`
     };
 
@@ -118,13 +119,13 @@ function populate_signal(tbody,  // table body to append rows
 
         // Add Strategy, Parameters, just one row for each strategy.
         if (i == 0) {
-          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", 'table_cell').text(strategy_displayname);
+          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).text(strategy_displayname);
           details_html = details_map[strategy_keyname];
-          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", 'table_cell').html(details_html);
+          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(details_html);
         }
 
         // Current metric
-        tbody_tr.append("th").attr("class", 'table_cell').text(cur_metric);
+        tbody_tr.append("th").attr("class", cell_class).text(cur_metric);
 
         // Loop over all keys for columns of metric values (6 month, 1 year, 2 year, CY2016~2020)
         for (var j = 0; j < keys.length; j++) {
@@ -136,7 +137,7 @@ function populate_signal(tbody,  // table body to append rows
             } else { 
                 metric_value = metric_value.toPrecision(4)
             }
-            tbody_tr.append("td").attr("class", 'table_cell').text(metric_value);
+            tbody_tr.append("td").attr("class", cell_class).text(metric_value);
         }
 
         // Add details column
@@ -150,7 +151,7 @@ function populate_signal(tbody,  // table body to append rows
           cell_text = cell_text.concat(" target=_blank>Details</a>");
 	  console.log(cell_text);
           tbody_tr.append("td").attr("rowspan", metrics.length)
-			.attr("class", 'table_cell').html(cell_text);
+			.attr("class", cell_class).html(cell_text);
 	}
     }  
 }  

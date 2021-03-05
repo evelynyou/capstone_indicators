@@ -105,12 +105,21 @@ h3 {
   background-color: #e8e8e8;
 }
  
- .table_cell {
+.table_cell_0 {
   padding: 2px 2px;
   font-weight: normal;
   text-align: center;
   border: 1px solid #ccc; 
- }
+  /* background-color: #e8e8e8; */
+}
+
+.table_cell_1 {
+  padding: 2px 2px;
+  font-weight: normal;
+  text-align: center;
+  border: 1px solid #ccc; 
+  background-color: #edddf2;
+}
 
 table thead,table tbody {
     display: table-header-group;
@@ -128,5 +137,8 @@ td, th {
   text-align: left
 }
 
+input { 
+  text-align: center; 
+}
 
 
