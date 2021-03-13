@@ -150,7 +150,10 @@ function populate_signal(tbody,  // table body to append rows
         // Loop over all keys for columns of metric values (6 month, 1 year, 2 year, CY2016~2020)
         for (var j = 0; j < keys.length; j++) {
             var strategy_with_date = keys[j];
-            var metric_value = data[strategy_with_date][cur_metric];
+            var metric_value = null;
+            if (strategy_with_date in data) {
+                metric_value = data[strategy_with_date][cur_metric];
+            }
             if (metric_value === null) {
                 console.log("Metric is null: ".concat(metric_value))
                 metric_value = "N/A"
