@@ -37,12 +37,20 @@ function backtest() {
                 // Append rows for indicators
                 populate_signal(table_body, data, metrics, "BuyAndHold", "Buy and Hold", "table_cell_0");  
                 add_table_separator(table_body);
+
+                insert_header_row(table_body);
                 populate_signal(table_body, data, metrics, "SmaCross", "SMA Cross", "table_cell_1"); 
                 add_table_separator(table_body);
+
+                insert_header_row(table_body);
                 populate_signal(table_body, data, metrics, "MacdSignal", "MACD Signal", "table_cell_0");  
                 add_table_separator(table_body);
+
+                insert_header_row(table_body);
                 populate_signal(table_body, data, metrics, "StochOsci", "Stochastic Oscillator", "table_cell_1"); 
                 add_table_separator(table_body);
+
+                insert_header_row(table_body);
                 populate_signal(table_body, data, metrics, "StochRsi", "Stochastic RSI", "table_cell_0"); 
 
                 //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
@@ -51,7 +59,6 @@ function backtest() {
 } 
 
 function populate_header() { 
-    // Clear existing items
     d3.select("#indicator_table").html("");
 
     // Now, add table.
@@ -79,9 +86,30 @@ function populate_header() {
     return tbody;
 } 
 
+// This is similar to the func above, just that it will not create table header. Instead,
+// it inserts another row with similar style with the header.
+function insert_header_row(tbody) { 
+    var tbody_tr = tbody.append("tr");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("Strategy");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("Parameters");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("Metric");
+
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("6-Montd");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("1-Year");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("2-Year");
+
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("CY2020"); 
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("CY2019");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("CY2018");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("CY2017");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("CY2016");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("Details"); 
+    return ;
+}
+
 function add_table_separator(tbody) {
   var tbody_tr = tbody.append("tr");
-  var sep = "---------------------------------------------------------------------------------";
+  var sep = "----------------------------------------------------------------------------------";
   sep = sep.concat(sep).concat(sep);
   tbody_tr.append("td").attr("colspan", "12").attr("class", "table_separator").text(sep);
 }
