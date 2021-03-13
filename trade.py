@@ -48,7 +48,11 @@ def run_backtests():
         ydata = stock_obj.get_ohlcv()
     except:
         logging.error('Uable to download data.')
-        return json.dumps({'err_msg': 'uable to download stock data.'})
+        return json.dumps({'err_msg': 'unable to download stock data.'})
+
+    # Likely invalid ticker
+    if ydata.shape[0] < 1:
+        return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
     
     # backtest
     backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ydata,

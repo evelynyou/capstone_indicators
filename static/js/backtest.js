@@ -3,7 +3,7 @@
 function backtest() {  
     // base_url = "http://ec2-100-20-59-199.us-west-2.compute.amazonaws.com:8888/backtest?stock_ticker=";
     base_url = "/backtest?stock_ticker=";
-    
+            
     ticker = document.getElementById("ticker").value;
     data_url = base_url.concat(ticker);
 
@@ -15,6 +15,14 @@ function backtest() {
             function(err, data) {
                 if (err) throw err;
                 console.log(data);
+
+		if ('err_msg' in data) {
+                  var err_msg = "<p style='color:red;font-size:25px;font-family:courier;'>"
+                                        .concat(data.err_msg)
+                                        .concat("</p>");
+                  d3.select("#indicator_table").html(err_msg);
+                  return;
+		}
 
                 // document.getElementById("indicator_table").innerHTML = JSON.stringify(data); 
                 
