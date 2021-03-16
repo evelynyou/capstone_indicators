@@ -54,3 +54,4 @@ def get_backtest_plot(ydata, strat, cash=10_000, commission=0.):
         data = file.read().replace('\n', '')
     return data
 
+
