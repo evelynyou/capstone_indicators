@@ -48,7 +48,11 @@ def run_backtests():
         ydata = stock_obj.get_ohlcv()
     except:
         logging.error('Uable to download data.')
-        return json.dumps({'err_msg': 'uable to download stock data.'})
+        return json.dumps({'err_msg': 'unable to download stock data.'})
+
+    # Likely invalid ticker
+    if ydata.shape[0] < 1:
+        return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
     
     # backtest
     backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ydata,
@@ -64,16 +68,6 @@ def backtest_details():
         return json.dumps({'err_msg': 'stock_ticker must be specified!'})
     ticker = request.args.get('stock_ticker')
 
-    # Get cash
-    if not 'cash' in request.args:
-        return json.dumps({'err_msg': 'cash must be specified!'})
-    cash = float(request.args.get('cash'))
-
-    # Get commission
-    if not 'commission' in request.args:
-        return json.dumps({'err_msg': 'commission must be specified!'})
-    commission = float(request.args.get('commission'))
-
     # Get Strategy
     if not 'strategy' in request.args:
         return json.dumps({'err_msg': 'staregy must be specified!'})
@@ -81,6 +75,7 @@ def backtest_details():
 
     strategy_map = {
             "MacdSignal": strats.MacdSignal,
+            "BuyAndHold": strats.BuyAndHold,
             "SmaCross": strats.SmaCross,
             "RsiSignal": strats.RsiSignal,
             "StochOsci": strats.StochOsci,
@@ -105,7 +100,7 @@ def backtest_details():
         return json.dumps({'err_msg': 'uable to download stock data.'})
     
     # Raw HTML file in string format
-    return backtest.get_backtest_plot(ydata, strategy_map[strategy], cash, commission)
+    return backtest.get_backtest_plot(ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
 
  
 @app.route("/how_it_works")

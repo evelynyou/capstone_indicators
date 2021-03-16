@@ -27,6 +27,11 @@ def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=10_000, commission: 
                 data = ydata.iloc[-int(float(period)*252):]
             elif isinstance(period, int):
                 data = ydata.loc["{}-12-31".format(period-1):"{}-12-31".format(period),]
+
+            # No data
+            if data.shape[0] == 0:
+                continue
+
             bt = Backtest(data, s, cash=cash, commission=commission)
             stats = bt.run()
             sname = str(stats["_strategy"])
