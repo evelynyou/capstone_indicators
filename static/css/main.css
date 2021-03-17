@@ -142,3 +142,45 @@ input {
 }
 
 
+/* For the page of details */
+#ticker_info {
+  display: block;
+  padding: 6px 12px;
+  border: 1px solid #ccc; 
+  width: 1200px;
+  height: 50px;
+  font-size: 15px;
+}
+
+#custom_parameters{
+  display: block;
+  padding: 6px 12px;
+  margin: 2px;
+  border: 1px solid #ccc; 
+  width: 1200px;
+  height: 50px;
+  font-size: 15px;
+}
+
+#vs_buy_and_hold{
+  display: block;
+  margin: 2px;
+  padding: 6px 12px;
+  border: 1px solid #ccc; 
+  width: 1200px;
+  font-size: 15px;
+  height: 50px;
+}
+
+#detail_chart{
+  display: block;
+  margin: 2px;
+  padding: 6px 12px;
+  border: 1px solid #ccc; 
+  width: 1200px;
+  height: 730px;
+  font-size: 15px;
+}
+
+
+

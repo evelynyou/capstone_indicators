@@ -102,6 +102,13 @@ def backtest_details():
     # Raw HTML file in string format
     return backtest.get_backtest_plot(ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
 
+
+@app.route("/details")
+def details_page():
+    ticker = request.args.get('stock_ticker')
+    strategy = request.args.get('strategy')
+    return render_template('details.html', stock_ticker=ticker, strategy = strategy)
+
  
 @app.route("/how_it_works")
 def how_it_works():
