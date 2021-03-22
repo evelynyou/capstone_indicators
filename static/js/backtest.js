@@ -125,7 +125,7 @@ function populate_signal(tbody,  // table body to append rows
                 strategy_keyname.concat("_2020"), strategy_keyname.concat("_2019"), strategy_keyname.concat("_2018"),
                 strategy_keyname.concat("_2017"), strategy_keyname.concat("_2016")]; 
 
-    var details_map = {
+    var parameters_map = {
 	    "BuyAndHold": "",
 	    "SmaCross": `<div style="text-align:center">
 	                    Short SMA <br> <input type='text' id='sma_short_sma' value='3' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
@@ -168,8 +168,8 @@ function populate_signal(tbody,  // table body to append rows
         // Add Strategy, Parameters, just one row for each strategy.
         if (i == 0) {
           tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).text(strategy_displayname);
-          details_html = details_map[strategy_keyname];
-          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(details_html);
+          parameters_html = parameters_map[strategy_keyname];
+          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(parameters_html);
         }
 
         // Current metric
@@ -193,7 +193,8 @@ function populate_signal(tbody,  // table body to append rows
 
         // Add details column
         if (i == 0) {
-	  detail_page_url = "/backtest_details?stock_ticker=";
+	  //detail_page_url = "/backtest_details?stock_ticker=";
+	  detail_page_url = "/details?stock_ticker=";
           detail_page_url = detail_page_url.concat(ticker);
           detail_page_url = detail_page_url.concat("&strategy=");
           detail_page_url = detail_page_url.concat(strategy_keyname);

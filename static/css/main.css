@@ -141,4 +141,55 @@ input {
   text-align: center; 
 }
 
+.custom_parameter_area {
+  text-align: right;
+}
+
+.refresh_button_area {
+  text-align: left;
+}
+
+
+
+/* For the page of details */
+.padding {
+  padding-top: 5px;
+}
+
+.border_line {
+  border: 1px solid #ccc; 
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+.custom_parameters_area {
+  padding: 6px 15px;
+  text-align: right;
+}
+
+.refresh_button_area {
+  padding: 6px 15px;
+  text-align: left;
+}
+
+.section_header {
+  font-size: 20px;
+  text-align: center;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.parameter_input {
+  margin-top: 2px;
+  width: 120px;
+  height: 25px;
+}
 
