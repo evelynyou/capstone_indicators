@@ -170,13 +170,41 @@ def reliability_test():
     preload = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
     ticker = request.args.get('stock_ticker')
     strategy = request.args.get('strategy')
+    corresponding_dict = {'SmaCross':backtest.sma_reliability, 
+                          'MacdSignal':backtest.macd_reliability,
+                          'RsiSignal':backtest.rsi_reliability}
+    reliability_test = corresponding_dict[strategy]
+    
+    stock_obj = get_data.yFinData(ticker)
+    print('Get request with ticker=' + ticker)
+    try:
+        ydata = stock_obj.get_ohlcv()
+    except:
+        logging.error('Uable to download data.')
+        return json.dumps({'err_msg': 'unable to download stock data.'})
+
+    # Likely invalid ticker
+    if ydata.shape[0] < 1:
+        return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
+    
     if ticker in preload:
+        #TODO: add preload htmls, now no difference, expect this to take ~5 min
+        train_stats, test_stats = reliability_test(ydata)
+        train_df, test_df = backtest.gather_sims(train_stats, test_stats)
+        train_plot, test_plot = backtest.visualize(train_df, ticker, strategy), backtest.visualize(test_df, ticker, strategy)
+    else:
+        train_stats, test_stats = reliability_test(ydata)
+        train_df, test_df = backtest.gather_sims(train_stats, test_stats)
+        train_plot, test_plot = backtest.visualize(train_df, ticker, strategy), backtest.visualize(test_df, ticker, strategy)
+    
+    pbo = calculate_pbo(train_df, test_df)
+    corr_plot = backtest.corr_plot(train_df, test_df, ticker, strategy)
     # Return html content directly just like the function `backtest_details`
     
     # Potential solution:
     # - Just check the ticker and read pre-generated data file, then return it.
     # - Return empty for not supported tickers
-    return ""
+    return train_plot, test_plot, pbo, corr_plot
  
 
  

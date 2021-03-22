@@ -6,6 +6,9 @@ import strats
 from typing import Tuple
 import time
 from sklearn.model_selection import BaseCrossValidator
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 
 
@@ -118,6 +121,7 @@ def get_backtest_plot(ydata, strat, cash=1_000_000, commission=0.):
     with open(filename, 'r') as file:
         data = file.read().replace('\n', '')
     return data
+    
 
 class CPCV(BaseCrossValidator):
     # TODO: add purge "holes" !!!
@@ -267,11 +271,11 @@ def gather_sims(train_stats, test_stats):
         test_dict[d] = test_collected
     return pd.DataFrame(train_dict), pd.DataFrame(test_dict)
 
-def visualize(df):
-    df['Sharpe Ratio Scaled'] = df['Sharpe Ratio'] * 100
+def visualize(df, ticker, strategy):
+    df['Sharpe Ratio (scaled, x100)'] = df['Sharpe Ratio'] * 100
     display = ['Return (Ann.) [%]', 'Exposure Time [%]', 'Win Rate [%]',
                'Volatility (Ann.) [%]', 'Max. Drawdown [%]',
-               'Sharpe Ratio Scaled']
+               'Sharpe Ratio (scaled, x100)']
     dfl = df.loc[:,display].stack().reset_index(level=1).rename(columns={'level_1':'metric', 0:'value'})
     dfl = dfl.astype({'value':'float64'})
     df  = df.loc[:,display]
@@ -279,5 +283,52 @@ def visualize(df):
     for i, ax in enumerate(g.axes.flat): # set every-other axis for testing purposes
         mini = df.iloc[:,i].min()
         maxi = df.iloc[:,i].max()
+        mean = df.iloc[:,i].mean()
+        ax.axvline(mean, ls = '--', color = 'red', label = "mean: {}".format(round(mean, 3)))
         ax.set_xlim(int(mini)-5,int(maxi)+5)
-    return g
+        ax.legend()
+    
+    tmpfile = BytesIO()
+    g.savefig(tmpfile, format='png')
+    encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
+    html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
+    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_" + str(time.time()) + ".html"
+    with open(filename,'w') as f:
+        f.write(html)
+    with open(filename, 'r') as f:
+        data = f.read().replace('\n', '')
+    return data
+
+def calculate_pbo(train_df, test_df):
+    w_c_is = train_df['Sharpe Ratio']
+    w_c_oos = test_df['Sharpe Ratio']
+    n_star = np.argmax(w_c_is)
+    n_star, ss.rankdata(w_c_oos)
+    w_c = (ss.rankdata(w_c_oos) - n_star) / len(w_c_oos)
+    w_c = w_c + np.abs(np.min(w_c))
+    y_c = np.log(w_c / (1 - w_c))
+    y_c[y_c==-np.inf] = 0
+    y_c_neg = y_c[y_c < 0]
+    y_c_neg = (y_c_neg - y_c_neg.min()) / (y_c_neg.max() - y_c_neg.min())
+    pbo = np.mean(y_c_neg)
+    return pbo
+
+def corr_plot(train_df, test_df, ticker, strategy):
+    train = train_df.loc[:,["Sharpe Ratio"]].rename(columns={"Sharpe Ratio":"Sharpe Ratio IS"})
+    test = test_df.loc[:,["Sharpe Ratio"]].rename(columns={"Sharpe Ratio":"Sharpe Ratio OOS"})
+    df = train.join(test)
+    corr = plt.figure()
+    sns.scatterplot(data=df, x="Sharpe Ratio IS", y="Sharpe Ratio OOS")
+    plt.xlabel('Sharpe ratios IS')
+    plt.ylabel('Sharpe ratios OOS')
+    
+    tmpfile = BytesIO()
+    corr.savefig(tmpfile, format='png')
+    encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
+    html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
+    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_corr_" + str(time.time()) + ".html"
+    with open(filename,'w') as f:
+        f.write(html)
+    with open(filename, 'r') as f:
+        data = f.read().replace('\n', '')
+    return data
