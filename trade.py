@@ -55,8 +55,7 @@ def run_backtests():
         return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
     
     # backtest
-    backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ydata,
-            cash, commission)
+    backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ydata, cash, commission)
     return backtest_returns.to_json()
 
 @app.route("/backtest_details")
@@ -121,41 +120,57 @@ def vs_buy_and_hold():
     # Object to hold strategy specific parameters
     strategy_specific_params = {}
     if (strategy == 'SmaCross') {
-      strategy_specific_params['sma_slow'] = int(request.args.get('sma_slow'))
-      strategy_specific_params['sma_long'] = int(request.args.get('sma_long'))
+      strategy_specific_params['slow'] = int(request.args.get('sma_slow'))
+      strategy_specific_params['fast'] = int(request.args.get('sma_long'))
     } elif (strategy == 'MacdSignal') {
-      strategy_specific_params['fast_period'] = int(request.args.get('fast_period'))
-      strategy_specific_params['slow_period'] = int(request.args.get('slow_period'))
-      strategy_specific_params['signal_period'] = int(request.args.get('signal_period'))
+      strategy_specific_params['fastperiod'] = int(request.args.get('fast_period'))
+      strategy_specific_params['slowperiod'] = int(request.args.get('slow_period'))
+      strategy_specific_params['signalperiod'] = int(request.args.get('signal_period'))
     } elif (strategy == 'StochOsci') {
-      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
-      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
-      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['fastk_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slowk_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slowd_period'] = int(request.args.get('slow_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
     } elif (strategy == 'StochRsi') {
-      strategy_specific_params['time_period'] = int(request.args.get('time_period'))
-      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
-      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
-      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['timeperiod'] = int(request.args.get('time_period'))
+      strategy_specific_params['fastk_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slowk_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slowd_period'] = int(request.args.get('slow_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
     } else {
       # Invalid strategy
     }
-     
-     
+    strategy_specific_params['long_only'] = long_only
+    
+    stock_obj = get_data.yFinData(ticker)
+    print('Get request with ticker=' + ticker)
+    try:
+        ydata = stock_obj.get_ohlcv()
+    except:
+        logging.error('Uable to download data.')
+        return json.dumps({'err_msg': 'unable to download stock data.'})
+
+    # Likely invalid ticker
+    if ydata.shape[0] < 1:
+        return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
+    
+    backtest_returns = get_back_test_comparasion(ydata, strategy, data_range, strategy_specific_params,
+                                                 cash=1_000_000, commission=0.)
     # (We may need to add functions to backtest.py to facilitate this) 
     # Return in JSON format the backtest results for the given strategy and buy-and-hold.
     # 
     # E.g., Return get_back_test_comparasion(ticker, strategy, date_range, long_only, strategy_specific_params)
-    return ""
+    return backtest_returns.to_json()
 
 
 @app.route("/reliability_test")
 def reliability_test():
+    preload = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
     ticker = request.args.get('stock_ticker')
     strategy = request.args.get('strategy')
+    if ticker in preload:
     # Return html content directly just like the function `backtest_details`
     
     # Potential solution:

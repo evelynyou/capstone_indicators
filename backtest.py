@@ -45,6 +45,64 @@ def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=1_000_000, commissio
     strat_returns.columns = sname_temp
     return strat_returns, equity_trades
 
+def get_back_test_comparasion(ydata: pd.DataFrame, strategy: str, data_range, strategy_params: dict,
+                              cash: int=1_000_000, commission: float=0.):
+    """
+    backtest vs buy/hold strategy in strats.py
+    input: stock OHLCV dataframe
+    output: dataframe of strategy returns, dictionary of trades and equity curve
+    """
+    avail_strats = [obj for name, obj in inspect.getmembers(strats, inspect.isclass) 
+                    if (obj.__name__ == strategy) or (obj.__name__ == "BuyAndHold")]
+    if not data_range.isdecimal():
+        corresponding = {"6m":0.5, "1y":1., "2y":2.}
+        data = ydata.iloc[-int(float(corresponding[data_range])*252):]
+    else:
+        data = ydata.loc["{}-12-31".format(int(data_range)-1):"{}-12-31".format(int(data_range)),]
+    
+    temp = []
+    sname_temp = []
+    equity_trades = {}
+    for s in avail_strats:
+        if data.shape[0] == 0:
+            continue
+
+        bt = Backtest(data, s, cash=cash, commission=commission)
+        if s.__name__ == 'SmaCross':
+            stats = bt.run(slow = strategy_params['slow'],
+                           fast = strategy_params['fast'],
+                           long_only = strategy_params['long_only'])
+        elif s.__name__ == 'MacdSignal':
+            stats = bt.run(fastperiod = strategy_params['fastperiod'],
+                           slowperiod = strategy_params['slowperiod'],
+                           signalperiod = strategy_params['signalperiod'],
+                           long_only = strategy_params['long_only'])
+        elif s.__name__ == 'StochOsci':
+            stats = bt.run(fastk_period = strategy_params['fastk_period'],
+                           slowk_period = strategy_params['slowk_period'],
+                           slowd_period = strategy_params['slowd_period'],
+                           overbought = strategy_params['overbought'],
+                           oversold = strategy_params['oversold'],
+                           long_only = strategy_params['long_only'])
+        elif s.__name__ == 'StochRsi':
+            stats = bt.run(timeperiod = strategy_params['timeperiod'],
+                           fastk_period = strategy_params['fastk_period'],
+                           slowk_period = strategy_params['slowk_period'],
+                           slowd_period = strategy_params['slowd_period'],
+                           overbought = strategy_params['overbought'],
+                           oversold = strategy_params['oversold'],
+                           long_only = strategy_params['long_only']) 
+        else:
+            stats = bt.run()
+        sname = str(stats["_strategy"])
+        sname_temp.append("{}_{}".format(sname, data_range))
+        temp.append(stats[:27])
+        equity_trades["{}_{}".format(sname, data_range)] = (stats["_equity_curve"], stats["_trades"])
+
+    strat_returns = pd.concat(temp, axis=1)
+    strat_returns.columns = sname_temp
+    return strat_returns
+
 def get_backtest_plot(ydata, strat, cash=1_000_000, commission=0.):
     """
     get auto generated backtestplot
@@ -100,6 +158,7 @@ class CPCV(BaseCrossValidator):
     
 
 def sma_reliability(data, N=6, k=2):
+    ydata = ydata.iloc[-int(float(5)*252):-1]
     cpcv = CPCV(data, N, k)
     train_temp = []
     test_temp = []
@@ -129,6 +188,7 @@ def sma_reliability(data, N=6, k=2):
     return train_stats, test_stats
 
 def macd_reliability(data, N=6, k=2):
+    ydata = ydata.iloc[-int(float(5)*252):-1]
     cpcv = CPCV(data, N, k)
     train_temp = []
     test_temp = []
@@ -159,6 +219,7 @@ def macd_reliability(data, N=6, k=2):
     return train_stats, test_stats
 
 def rsi_reliability(ydata, N=6, k=2):
+    ydata = ydata.iloc[-int(float(5)*252):-1]
     cpcv = CPCV(ydata, N, k)
     train_temp = []
     test_temp = []
