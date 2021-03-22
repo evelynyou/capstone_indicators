@@ -109,6 +109,61 @@ def details_page():
     strategy = request.args.get('strategy')
     return render_template('details.html', stock_ticker=ticker, strategy = strategy)
 
+
+@app.route("/vs_buy_and_hold")
+def vs_buy_and_hold():
+    # Extract common parameters
+    ticker = request.args.get('stock_ticker')
+    strategy = request.args.get('strategy')
+    long_only = request.args.get('long_only') # 'Yes' or 'No'
+    date_range = request.args.get('date_range') # '6m', '1y', '2y', '2016', '2017', '2018', '2019', '2020'
+
+    # Object to hold strategy specific parameters
+    strategy_specific_params = {}
+    if (strategy == 'SmaCross') {
+      strategy_specific_params['sma_slow'] = int(request.args.get('sma_slow'))
+      strategy_specific_params['sma_long'] = int(request.args.get('sma_long'))
+    } elif (strategy == 'MacdSignal') {
+      strategy_specific_params['fast_period'] = int(request.args.get('fast_period'))
+      strategy_specific_params['slow_period'] = int(request.args.get('slow_period'))
+      strategy_specific_params['signal_period'] = int(request.args.get('signal_period'))
+    } elif (strategy == 'StochOsci') {
+      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['overbought'] = int(request.args.get('overbought'))
+      strategy_specific_params['oversold'] = int(request.args.get('oversold'))
+    } elif (strategy == 'StochRsi') {
+      strategy_specific_params['time_period'] = int(request.args.get('time_period'))
+      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['overbought'] = int(request.args.get('overbought'))
+      strategy_specific_params['oversold'] = int(request.args.get('oversold'))
+    } else {
+      # Invalid strategy
+    }
+     
+     
+    # (We may need to add functions to backtest.py to facilitate this) 
+    # Return in JSON format the backtest results for the given strategy and buy-and-hold.
+    # 
+    # E.g., Return get_back_test_comparasion(ticker, strategy, date_range, long_only, strategy_specific_params)
+    return ""
+
+
+@app.route("/reliability_test")
+def reliability_test():
+    ticker = request.args.get('stock_ticker')
+    strategy = request.args.get('strategy')
+    # Return html content directly just like the function `backtest_details`
+    
+    # Potential solution:
+    # - Just check the ticker and read pre-generated data file, then return it.
+    # - Return empty for not supported tickers
+    return ""
+ 
+
  
 @app.route("/how_it_works")
 def how_it_works():
