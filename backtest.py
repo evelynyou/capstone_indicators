@@ -10,7 +10,7 @@ import time
 # Run backtesting
 avail_strats = [obj for name, obj in inspect.getmembers(strats, inspect.isclass) if obj.__module__ == 'strats']
 
-def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=10_000, commission: float=0.) -> Tuple[pd.DataFrame, dict]:
+def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=1_000_000, commission: float=0.) -> Tuple[pd.DataFrame, dict]:
     """
     backtest all strategies in strats.py
     input: stock OHLCV dataframe
@@ -43,7 +43,7 @@ def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=10_000, commission: 
     strat_returns.columns = sname_temp
     return strat_returns, equity_trades
 
-def get_backtest_plot(ydata, strat, cash=10_000, commission=0.):
+def get_backtest_plot(ydata, strat, cash=1_000_000, commission=0.):
     """
     get auto generated backtestplot
     input: stock OHLCV dataframe, strategy
