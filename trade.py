@@ -158,10 +158,8 @@ def vs_buy_and_hold():
     
     backtest_returns = get_back_test_comparasion(ydata, strategy, data_range, strategy_specific_params,
                                                  cash=1_000_000, commission=0.)
-    # (We may need to add functions to backtest.py to facilitate this) 
-    # Return in JSON format the backtest results for the given strategy and buy-and-hold.
-    # 
-    # E.g., Return get_back_test_comparasion(ticker, strategy, date_range, long_only, strategy_specific_params)
+    
+    # this is same as run_backtests() but now with custom params and comparison of B/H and strategy
     return backtest_returns.to_json()
 
 
@@ -204,6 +202,10 @@ def reliability_test():
     # Potential solution:
     # - Just check the ticker and read pre-generated data file, then return it.
     # - Return empty for not supported tickers
+    
+    # train_plot, test_plot, and corr_plot should be htmls, checkout the reliability_plots folder.
+    # display this similarly to how we are displaying in details page
+    # pbo is a single float, just show "Probability of Overfitting: pbo" somewhere
     return train_plot, test_plot, pbo, corr_plot
  
 
