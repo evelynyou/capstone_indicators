@@ -141,46 +141,50 @@ input {
   text-align: center; 
 }
 
+.custom_parameter_area {
+  text-align: right;
+}
+
+.refresh_button_area {
+  text-align: left;
+}
+
+
 
 /* For the page of details */
-#ticker_info {
-  display: block;
-  padding: 6px 12px;
-  border: 1px solid #ccc; 
-  width: 1200px;
-  height: 50px;
-  font-size: 15px;
+.padding {
+  padding-top: 5px;
 }
 
-#custom_parameters{
-  display: block;
-  padding: 6px 12px;
-  margin: 2px;
+.border_line {
   border: 1px solid #ccc; 
-  width: 1200px;
-  height: 50px;
-  font-size: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-#vs_buy_and_hold{
-  display: block;
-  margin: 2px;
-  padding: 6px 12px;
-  border: 1px solid #ccc; 
-  width: 1200px;
-  font-size: 15px;
-  height: 50px;
+
+.custom_parameters_area {
+  padding: 6px 15px;
+  text-align: right;
 }
 
-#detail_chart{
-  display: block;
-  margin: 2px;
-  padding: 6px 12px;
-  border: 1px solid #ccc; 
-  width: 1200px;
-  height: 730px;
-  font-size: 15px;
+.refresh_button_area {
+  padding: 6px 15px;
+  text-align: left;
 }
 
+.section_header {
+  font-size: 15px;
+  text-align: center;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 
 

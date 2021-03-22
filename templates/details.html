@@ -22,26 +22,63 @@
     <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-    <!-- JS to do the tab switch -->
-    <script src="/static/js/tab.js"></script>
-    <script src="/static/js/backtest.js"></script> 
-
+    <!-- Custom JS -->
+    <script src="/static/js/details.js"></script> 
 </head>
 
 <body>
   <center>
-    <div id="ticker_info">
+
+    <!-- Ticker and strategy -->
+    <div class='col-xs-12 col-md-12 padding '>
+       <div class='col-xs-12 col-md-3'> </div>
+       <div class='col-xs-12 col-md-6 border_line'>
+        <p class='section_header'> Deepdive of Trading Strategy </p>
         Ticker: <input type='text' id='details_ticker' value='{{ stock_ticker }}' style='background-color:#e8e8e8;' size='18%' readonly>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        Strategy: <input type='text' id='details_strategyr' value='{{ strategy }}' style='background-color:#e8e8e8;' size='18%' readonly>
+        Strategy: <input type='text' id='details_strategy' value='{{ strategy }}' style='background-color:#e8e8e8;' size='18%' readonly>
+       </div>
+       <div class='col-xs-12 col-md-3'> </div>
     </div>
-    <div id="custom_parameters"> TODO: Custom Parameters </div>
-    <div id="vs_buy_and_hold"> TODO: charts table side by side with Buy-and-Hold </div>
-    <div id="detail_chart"> 
-       <iframe frameborder="0" width="1200" height="3000" src="/backtest_details?stock_ticker={{stock_ticker}}&strategy={{strategy}}"> </iframe>
-    </div>
-  </center>
 
+    <!-- Custom parameters -->
+    <div class='col-xs-12 col-md-12 padding '>
+       <div class='col-xs-12 col-md-3'> </div>    
+       <div class='col-xs-12 col-md-6 border_line'>
+          <div class='col-md-6 custom_parameter_area ' id="custom_parameters"> </div>    
+          <div class='col-md-6 refresh_button_area vertical-center'>
+            <button class="search_button" onclick="refresh()"> Refresh with new parameters! </button>  
+          </div>
+       </div>
+       <div class='col-xs-12 col-md-3'> </div>    
+    </div>
+
+    <!-- Metrics vs Buy-and-Hold -->
+    <div class='col-xs-12 col-md-12 padding'>
+       <div class='col-xs-12 col-md-3'> </div>    
+       <div class='col-xs-12 col-md-6 border_line'>
+          <div id="vs_buy_and_hold"> TODO: charts table side by side with Buy-and-Hold </div>
+       </div>
+       <div class='col-xs-12 col-md-3'> </div>    
+    </div>
+
+
+    <!-- Detailed chart -->
+    <div class='col-xs-12 col-md-12 padding'>
+       <div class='col-xs-12 col-md-3'> </div>    
+       <div class='col-xs-12 col-md-6 border_line'>
+          <iframe frameborder="0" width="100%" height="800" 
+                  src="/backtest_details?stock_ticker={{stock_ticker}}&strategy={{strategy}}"> </iframe>
+       </div>
+       <div class='col-xs-12 col-md-3'> </div>    
+    </div>
+
+   </center>
+
+  <!-- Render custom parameters based on strategy -->
+  <script type = "text/javascript">  
+    render_custom_parameters();
+  </script>  
 
 </body>
 
