@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask import request
+from flask import Markup
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -207,7 +208,12 @@ def reliability_test():
     # train_plot, test_plot, and corr_plot should be htmls, checkout the reliability_plots folder.
     # display this similarly to how we are displaying in details page
     # pbo is a single float, just show "Probability of Overfitting: pbo" somewhere
-    return train_plot, test_plot, pbo, corr_plot
+    #return train_plot, test_plot, pbo, corr_plot
+    return render_template('reliability_test.html',
+                           overfit_prob=pbo,
+                           chart_1=Markup(train_plot),
+                           chart_2=Markup(test_plot),
+                           chart_3=Markup(corr_plot))
  
 
  
@@ -222,7 +228,9 @@ def how_it_works():
 def indicators():
     print('In indicators')
     #return 'Best Trading Indicators Ever!'
-    return render_template('indicators.html')
+    #return render_template('indicators.html')
+    html = Markup('<img src="/static/images/test_how_it_works.png">')
+    return render_template('reliability_test.html', chart_1=html, chart_2=html, chart_3=html)
 
 
 @app.route("/about")
