@@ -1,6 +1,7 @@
 from backtesting import Backtest
 import inspect
 import pandas as pd
+import numpy as np
 import seaborn as sns
 import strats
 from typing import Tuple
