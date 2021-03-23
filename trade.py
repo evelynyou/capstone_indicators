@@ -119,29 +119,30 @@ def vs_buy_and_hold():
 
     # Object to hold strategy specific parameters
     strategy_specific_params = {}
-    if (strategy == 'SmaCross') {
+    if (strategy == 'SmaCross'):
       strategy_specific_params['slow'] = int(request.args.get('sma_slow'))
       strategy_specific_params['fast'] = int(request.args.get('sma_long'))
-    } elif (strategy == 'MacdSignal') {
+    elif (strategy == 'MacdSignal'):
       strategy_specific_params['fastperiod'] = int(request.args.get('fast_period'))
       strategy_specific_params['slowperiod'] = int(request.args.get('slow_period'))
       strategy_specific_params['signalperiod'] = int(request.args.get('signal_period'))
-    } elif (strategy == 'StochOsci') {
+    elif (strategy == 'StochOsci'):
       strategy_specific_params['fastk_period'] = int(request.args.get('fast_k_period'))
       strategy_specific_params['slowk_period'] = int(request.args.get('slow_k_period'))
       strategy_specific_params['slowd_period'] = int(request.args.get('slow_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
-    } elif (strategy == 'StochRsi') {
+    elif (strategy == 'StochRsi'):
       strategy_specific_params['timeperiod'] = int(request.args.get('time_period'))
       strategy_specific_params['fastk_period'] = int(request.args.get('fast_k_period'))
       strategy_specific_params['slowk_period'] = int(request.args.get('slow_k_period'))
       strategy_specific_params['slowd_period'] = int(request.args.get('slow_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
-    } else {
+    else: 
       # Invalid strategy
-    }
+      pass
+
     strategy_specific_params['long_only'] = long_only
     
     stock_obj = get_data.yFinData(ticker)
