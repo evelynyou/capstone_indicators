@@ -162,7 +162,7 @@ class CPCV(BaseCrossValidator):
     
 
 def sma_reliability(data, N=6, k=2):
-    ydata = ydata.iloc[-int(float(5)*252):-1]
+    data = data.iloc[-int(float(5)*252):-1]
     cpcv = CPCV(data, N, k)
     train_temp = []
     test_temp = []
@@ -192,7 +192,7 @@ def sma_reliability(data, N=6, k=2):
     return train_stats, test_stats
 
 def macd_reliability(data, N=6, k=2):
-    ydata = ydata.iloc[-int(float(5)*252):-1]
+    data = data.iloc[-int(float(5)*252):-1]
     cpcv = CPCV(data, N, k)
     train_temp = []
     test_temp = []
@@ -222,14 +222,14 @@ def macd_reliability(data, N=6, k=2):
     test_stats = [pd.concat(test, axis=1) for test in test_temp]
     return train_stats, test_stats
 
-def rsi_reliability(ydata, N=6, k=2):
-    ydata = ydata.iloc[-int(float(5)*252):-1]
-    cpcv = CPCV(ydata, N, k)
+def rsi_reliability(data, N=6, k=2):
+    data = data.iloc[-int(float(5)*252):-1]
+    cpcv = CPCV(data, N, k)
     train_temp = []
     test_temp = []
     NSAMPLES = 5
     for e, (train_ids, test_ids) in enumerate(cpcv.split()):
-        dataset_train, dataset_test = ydata.iloc[train_ids], ydata.iloc[test_ids]
+        dataset_train, dataset_test = data.iloc[train_ids], data.iloc[test_ids]
         train, test = [], []
         bt = Backtest(dataset_train, strats.RsiSignal, cash=10_000, commission=0.0)
         for i in range(NSAMPLES):
