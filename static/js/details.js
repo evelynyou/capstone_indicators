@@ -54,7 +54,47 @@ function render_custom_parameters() {
 }
 
 function refresh() {
-    window.alert("refresh");
+    strategy =  document.getElementById("details_strategy").value;
+    stock_ticker =  document.getElementById("details_ticker").value;
+    d3.select("#vs_buy_and_hold").html("");
+
+    switch(strategy) {
+        case "SmaCross":
+            // code block
+            sma_slow = document.getElementById("sma_long_sma").value;
+            sma_fast = document.getElementById("sma_short_sma").value;
+            long_only = document.getElementById("sma_long_only").value;
+            // TODO: add this parameter
+            date_range = "1y"
+            // http://ec2-100-20-59-199.us-west-2.compute.amazonaws.com:8888/vs_buy_and_hold?stock_ticker=SPY&strategy=SmaCross&date_range=1y&sma_slow=15&sma_fast=3&long_only=Yes
+            url = "/vs_buy_and_hold?"
+                    .concat("stock_ticker=").concat(stock_ticker)
+                    .concat("&strategy=").concat(strategy)
+                    .concat("&sma_slow=").concat(sma_slow)
+                    .concat("&sma_fast=").concat(sma_fast)
+                    .concat("&long_only=").concat(long_only)
+                    .concat("&date_range=").concat(date_range);
+
+            console.log(url);
+
+            d3.json(url, function(err, data) {
+                if (err) throw err;
+                console.log(data);
+                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
+            });
+            break;
+        case "MacdSignal":
+            // code block
+            break;
+        case "StochOsci":
+            // code block
+            break;
+        case "StochRsi":
+            // code block
+            break;
+        default:
+            window.alert("Not supported strategy: ".concat(strategy));
+    }
 }
  
 
