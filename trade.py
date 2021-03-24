@@ -209,6 +209,7 @@ def reliability_test():
     # display this similarly to how we are displaying in details page
     # pbo is a single float, just show "Probability of Overfitting: pbo" somewhere
     #return train_plot, test_plot, pbo, corr_plot
+
     return render_template('reliability_test.html',
                            overfit_prob=pbo,
                            chart_1=Markup(train_plot),
@@ -229,8 +230,17 @@ def indicators():
     print('In indicators')
     #return 'Best Trading Indicators Ever!'
     #return render_template('indicators.html')
-    html = Markup('<img src="/static/images/test_how_it_works.png">')
-    return render_template('reliability_test.html', chart_1=html, chart_2=html, chart_3=html)
+
+    filename = "./reliability_plots/SPY_MacdSignal_corr_1616414167.852484.html"
+    # Conver it to string
+    with open(filename, 'r') as file:
+        raw_img = file.read().replace('\n', '')
+
+    return render_template('reliability_test.html',
+                           overfit_prob=0.75,
+                           chart_1=Markup(raw_img),
+                           chart_2=Markup(raw_img),
+                           chart_3=Markup(raw_img))
 
 
 @app.route("/about")
