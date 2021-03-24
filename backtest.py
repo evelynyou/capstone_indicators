@@ -76,26 +76,26 @@ def get_back_test_comparasion(ydata: pd.DataFrame, strategy: str, data_range, st
 
         bt = Backtest(data, s, cash=cash, commission=commission)
         if s.__name__ == 'SmaCross':
-            stats = bt.run(slow = strategy_params['slow'],
-                           fast = strategy_params['fast'],
+            stats = bt.run(slow = strategy_params['sma_slow'],
+                           fast = strategy_params['sma_fast'],
                            long_only = strategy_params['long_only'])
         elif s.__name__ == 'MacdSignal':
-            stats = bt.run(fastperiod = strategy_params['fastperiod'],
-                           slowperiod = strategy_params['slowperiod'],
-                           signalperiod = strategy_params['signalperiod'],
+            stats = bt.run(fastperiod = strategy_params['fast_period'],
+                           slowperiod = strategy_params['slow_period'],
+                           signalperiod = strategy_params['signal_period'],
                            long_only = strategy_params['long_only'])
         elif s.__name__ == 'StochOsci':
-            stats = bt.run(fastk_period = strategy_params['fastk_period'],
-                           slowk_period = strategy_params['slowk_period'],
-                           slowd_period = strategy_params['slowd_period'],
+            stats = bt.run(fastk_period = strategy_params['fast_k_period'],
+                           slowk_period = strategy_params['slow_k_period'],
+                           slowd_period = strategy_params['slow_d_period'],
                            overbought = strategy_params['overbought'],
                            oversold = strategy_params['oversold'],
                            long_only = strategy_params['long_only'])
         elif s.__name__ == 'StochRsi':
-            stats = bt.run(timeperiod = strategy_params['timeperiod'],
-                           fastk_period = strategy_params['fastk_period'],
-                           slowk_period = strategy_params['slowk_period'],
-                           slowd_period = strategy_params['slowd_period'],
+            stats = bt.run(timeperiod = strategy_params['time_period'],
+                           fastk_period = strategy_params['fast_k_period'],
+                           slowk_period = strategy_params['slow_k_period'],
+                           slowd_period = strategy_params['slow_d_period'],
                            overbought = strategy_params['overbought'],
                            oversold = strategy_params['oversold'],
                            long_only = strategy_params['long_only']) 
