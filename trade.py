@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask import request
+from flask import Markup
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -114,37 +115,41 @@ def vs_buy_and_hold():
     # Extract common parameters
     ticker = request.args.get('stock_ticker')
     strategy = request.args.get('strategy')
-    long_only = request.args.get('long_only') # 'Yes' or 'No'
     date_range = request.args.get('date_range') # '6m', '1y', '2y', '2016', '2017', '2018', '2019', '2020'
 
     # Object to hold strategy specific parameters
     strategy_specific_params = {}
+    long_only = request.args.get('long_only') # 'Yes' or 'No'
+    if long_only == 'Yes':
+       strategy_specific_params['long_only'] = True 
+    else:
+       strategy_specific_params['long_only'] = False
+
+
     if (strategy == 'SmaCross'):
-      strategy_specific_params['slow'] = int(request.args.get('sma_slow'))
-      strategy_specific_params['fast'] = int(request.args.get('sma_long'))
+      strategy_specific_params['sma_slow'] = int(request.args.get('sma_slow'))
+      strategy_specific_params['sma_fast'] = int(request.args.get('sma_fast'))
     elif (strategy == 'MacdSignal'):
-      strategy_specific_params['fastperiod'] = int(request.args.get('fast_period'))
-      strategy_specific_params['slowperiod'] = int(request.args.get('slow_period'))
-      strategy_specific_params['signalperiod'] = int(request.args.get('signal_period'))
+      strategy_specific_params['fast_period'] = int(request.args.get('fast_period'))
+      strategy_specific_params['slow_period'] = int(request.args.get('slow_period'))
+      strategy_specific_params['signal_period'] = int(request.args.get('signal_period'))
     elif (strategy == 'StochOsci'):
-      strategy_specific_params['fastk_period'] = int(request.args.get('fast_k_period'))
-      strategy_specific_params['slowk_period'] = int(request.args.get('slow_k_period'))
-      strategy_specific_params['slowd_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
     elif (strategy == 'StochRsi'):
-      strategy_specific_params['timeperiod'] = int(request.args.get('time_period'))
-      strategy_specific_params['fastk_period'] = int(request.args.get('fast_k_period'))
-      strategy_specific_params['slowk_period'] = int(request.args.get('slow_k_period'))
-      strategy_specific_params['slowd_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['time_period'] = int(request.args.get('time_period'))
+      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
     else: 
       # Invalid strategy
       pass
 
-    strategy_specific_params['long_only'] = long_only
-    
     stock_obj = get_data.yFinData(ticker)
     print('Get request with ticker=' + ticker)
     try:
@@ -157,7 +162,7 @@ def vs_buy_and_hold():
     if ydata.shape[0] < 1:
         return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
     
-    backtest_returns = get_back_test_comparasion(ydata, strategy, data_range, strategy_specific_params,
+    backtest_returns = backtest.get_back_test_comparasion(ydata, strategy, date_range, strategy_specific_params,
                                                  cash=1_000_000, commission=0.)
     
     # this is same as run_backtests() but now with custom params and comparison of B/H and strategy
@@ -202,7 +207,13 @@ def reliability_test():
     # train_plot, test_plot, and corr_plot should be htmls, checkout the reliability_plots folder.
     # display this similarly to how we are displaying in details page
     # pbo is a single float, just show "Probability of Overfitting: pbo" somewhere
-    return train_plot, test_plot, pbo, corr_plot
+    #return train_plot, test_plot, pbo, corr_plot
+
+    return render_template('reliability_test.html',
+                           overfit_prob=pbo,
+                           chart_1=Markup(train_plot),
+                           chart_2=Markup(test_plot),
+                           chart_3=Markup(corr_plot))
  
 def daily_process():
     tickers = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
@@ -241,7 +252,18 @@ def how_it_works():
 def indicators():
     print('In indicators')
     #return 'Best Trading Indicators Ever!'
-    return render_template('indicators.html')
+    #return render_template('indicators.html')
+
+    filename = "./reliability_plots/SPY_MacdSignal_corr_1616414167.852484.html"
+    # Conver it to string
+    with open(filename, 'r') as file:
+        raw_img = file.read().replace('\n', '')
+
+    return render_template('reliability_test.html',
+                           overfit_prob=0.75,
+                           chart_1=Markup(raw_img),
+                           chart_2=Markup(raw_img),
+                           chart_3=Markup(raw_img))
 
 
 @app.route("/about")
