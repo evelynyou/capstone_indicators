@@ -181,6 +181,8 @@ def read_files(ticker, strategy):
             corr = get_file(os.path.join(folder, filename))
     return train, test, corr
 
+
+
 @app.route("/reliability_test")
 def reliability_test():
     preload = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
@@ -211,7 +213,6 @@ def reliability_test():
         return train, test, corr, pbo
     else:
         return json.dumps({'err_msg': 'this ticker is not currently supported for reliability tests!'})
-        return None
 
     
 def daily_process():
