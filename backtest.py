@@ -11,6 +11,7 @@ from typing import Tuple
 import time
 from sklearn.model_selection import BaseCrossValidator
 import matplotlib.pyplot as plt
+from datetime import date, datetime
 import base64
 from io import BytesIO
 
@@ -275,7 +276,7 @@ def gather_sims(train_stats, test_stats):
         test_dict[d] = test_collected
     return pd.DataFrame(train_dict), pd.DataFrame(test_dict)
 
-def visualize(df, ticker, strategy):
+def visualize(df, tt, ticker, strategy):
     df['Sharpe Ratio (scaled, x100)'] = df['Sharpe Ratio'] * 100
     display = ['Return (Ann.) [%]', 'Exposure Time [%]', 'Win Rate [%]',
                'Volatility (Ann.) [%]', 'Max. Drawdown [%]',
@@ -296,12 +297,9 @@ def visualize(df, ticker, strategy):
     g.savefig(tmpfile, format='png')
     encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
     html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
-    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_" + str(time.time()) + ".html"
+    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_" + tt + "_" + date.today().strftime("%d%m%Y") + ".html"
     with open(filename,'w') as f:
         f.write(html)
-    with open(filename, 'r') as f:
-        data = f.read().replace('\n', '')
-    return data
 
 def calculate_pbo(train_df, test_df):
     w_c_is = train_df['Sharpe Ratio']
@@ -330,9 +328,6 @@ def corr_plot(train_df, test_df, ticker, strategy):
     corr.savefig(tmpfile, format='png')
     encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
     html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
-    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_corr_" + str(time.time()) + ".html"
+    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_corr_" + date.today().strftime("%d%m%Y") + ".html"
     with open(filename,'w') as f:
         f.write(html)
-    with open(filename, 'r') as f:
-        data = f.read().replace('\n', '')
-    return data

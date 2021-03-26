@@ -192,12 +192,7 @@ def reliability_test():
         train_df, test_df = backtest.gather_sims(train_stats, test_stats)
         train_plot, test_plot = backtest.visualize(train_df, ticker, strategy), backtest.visualize(test_df, ticker, strategy)
     else:
-        train_stats, test_stats = reliability_test(ydata)
-        train_df, test_df = backtest.gather_sims(train_stats, test_stats)
-        train_plot, test_plot = backtest.visualize(train_df, ticker, strategy), backtest.visualize(test_df, ticker, strategy)
-    
-    pbo = calculate_pbo(train_df, test_df)
-    corr_plot = backtest.corr_plot(train_df, test_df, ticker, strategy)
+        return None
     # Return html content directly just like the function `backtest_details`
     
     # Potential solution:
