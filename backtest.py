@@ -297,7 +297,7 @@ def visualize(df, tt, ticker, strategy):
     g.savefig(tmpfile, format='png')
     encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
     html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
-    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_" + tt + "_" + date.today().strftime("%d%m%Y") + ".html"
+    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_" + tt + ".html"
     with open(filename,'w') as f:
         f.write(html)
 
@@ -328,6 +328,6 @@ def corr_plot(train_df, test_df, ticker, strategy):
     corr.savefig(tmpfile, format='png')
     encoded = base64.b64encode(tmpfile.getvalue()).decode('utf-8')
     html = '<img src=\'data:image/png;base64,{}\'>'.format(encoded)
-    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_corr_" + date.today().strftime("%d%m%Y") + ".html"
+    filename = "./reliability_plots/"+ ticker + "_" + strategy + "_corr" + ".html"
     with open(filename,'w') as f:
         f.write(html)
