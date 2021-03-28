@@ -209,7 +209,8 @@ def reliability_test():
         train, test, corr = read_files(ticker, strategy)
         pbo_df = pd.read_csv(os.path.join("reliability_pbo", ticker + "_pbo.csv"))
         pbo = pbo_df.loc[pbo_df["strategy"] == strategy, "pbo"].values[0]
-        return train, test, corr, pbo
+        date = pbo_df.loc[pbo_df["strategy"] == strategy, "datetime"].values[0]
+        return train, test, corr, pbo, date
     else:
         return None # print 'This ticker is not currently supported for reliability tests!'
 
