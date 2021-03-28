@@ -190,8 +190,7 @@ function refresh() {
             // strategy specific
             time_period = document.getElementById("rsi_time_period").value;
             fast_k_period = document.getElementById("rsi_fast_k_period").value;
-            slow_k_period = document.getElementById("rsi_slow_k_period").value;
-            slow_d_period = document.getElementById("rsi_slow_d_period").value;
+            fast_d_period = document.getElementById("rsi_fast_d_period").value;
             overbought = document.getElementById("rsi_overbought").value;
             oversold = document.getElementById("rsi_oversold").value;
 
@@ -203,8 +202,7 @@ function refresh() {
                     .concat("&date_range=").concat(date_range)
                     .concat("&time_period=").concat(time_period)
                     .concat("&fast_k_period=").concat(fast_k_period)
-                    .concat("&slow_k_period=").concat(slow_k_period)
-                    .concat("&slow_d_period=").concat(slow_d_period)
+                    .concat("&fast_d_period=").concat(fast_d_period)
                     .concat("&overbought=").concat(overbought)
                     .concat("&oversold=").concat(oversold);
 

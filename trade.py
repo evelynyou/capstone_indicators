@@ -136,8 +136,7 @@ def vs_buy_and_hold():
     elif (strategy == 'StochRsi'):
       strategy_specific_params['time_period'] = int(request.args.get('time_period'))
       strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
-      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
-      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['fast_d_period'] = int(request.args.get('fast_d_period'))
       strategy_specific_params['overbought'] = int(request.args.get('overbought'))
       strategy_specific_params['oversold'] = int(request.args.get('oversold'))
     else: 
