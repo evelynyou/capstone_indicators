@@ -95,8 +95,7 @@ def get_back_test_comparasion(ydata: pd.DataFrame, strategy: str, data_range, st
         elif s.__name__ == 'StochRsi':
             stats = bt.run(timeperiod = strategy_params['time_period'],
                            fastk_period = strategy_params['fast_k_period'],
-                           slowk_period = strategy_params['slow_k_period'],
-                           slowd_period = strategy_params['slow_d_period'],
+                           fastd_period = strategy_params['fast_d_period'],
                            overbought = strategy_params['overbought'],
                            oversold = strategy_params['oversold'],
                            long_only = strategy_params['long_only'])
