@@ -110,7 +110,7 @@ function refresh() {
             sma_fast = document.getElementById("sma_short_sma").value;
             long_only = document.getElementById("long_only").value;
             date_range = document.getElementById("date_range").value;
-            // http://ec2-100-20-59-199.us-west-2.compute.amazonaws.com:8888/vs_buy_and_hold?stock_ticker=SPY&strategy=SmaCross&date_range=1y&sma_slow=15&sma_fast=3&long_only=Yes
+            // /vs_buy_and_hold?stock_ticker=SPY&strategy=SmaCross&date_range=1y&sma_slow=15&sma_fast=3&long_only=Yes
             url = "/vs_buy_and_hold?"
                     .concat("stock_ticker=").concat(stock_ticker)
                     .concat("&strategy=").concat(strategy)
@@ -120,21 +120,100 @@ function refresh() {
                     .concat("&date_range=").concat(date_range);
 
             console.log(url);
-
             d3.json(url, function(err, data) {
                 if (err) throw err;
                 console.log(data);
                 d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
             });
             break;
+
         case "MacdSignal":
-            // code block
+            // common fields 
+            long_only = document.getElementById("long_only").value;
+            date_range = document.getElementById("date_range").value;
+            // strategy specific
+            fast_period = document.getElementById("macd_fast_period").value;
+            slow_period = document.getElementById("macd_slow_period").value;
+            signal_period = document.getElementById("macd_signal_period").value;
+
+            // /vs_buy_and_hold?stock_ticker=SPY&strategy=MacdSignal&date_range=1y&long_only=Yes&fast_period=3&slow_period=15&signal_period=21
+            url = "/vs_buy_and_hold?"
+                    .concat("stock_ticker=").concat(stock_ticker)
+                    .concat("&strategy=").concat(strategy)
+                    .concat("&long_only=").concat(long_only)
+                    .concat("&date_range=").concat(date_range)
+                    .concat("&fast_period=").concat(fast_period)
+                    .concat("&slow_period=").concat(slow_period)
+                    .concat("&signal_period=").concat(signal_period);
+
+            console.log(url);
+            d3.json(url, function(err, data) {
+                if (err) throw err;
+                console.log(data);
+                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
+            });
             break;
         case "StochOsci":
-            // code block
+            // common fields 
+            long_only = document.getElementById("long_only").value;
+            date_range = document.getElementById("date_range").value;
+            // strategy specific
+            fast_k_period = document.getElementById("osci_fast_k_period").value;
+            slow_k_period = document.getElementById("osci_slow_k_period").value;
+            slow_d_period = document.getElementById("osci_slow_d_period").value;
+            overbought = document.getElementById("osci_overbought").value;
+            oversold = document.getElementById("osci_oversold").value;
+
+            // /vs_buy_and_hold?stock_ticker=SPY&strategy=StochOsci&date_range=1y&long_only=Yes&fast_k_period=3&slow_k_period=15&slow_d_period=21&overbought=80&oversold=20
+            url = "/vs_buy_and_hold?"
+                    .concat("stock_ticker=").concat(stock_ticker)
+                    .concat("&strategy=").concat(strategy)
+                    .concat("&long_only=").concat(long_only)
+                    .concat("&date_range=").concat(date_range)
+                    .concat("&fast_k_period=").concat(fast_k_period)
+                    .concat("&slow_k_period=").concat(slow_k_period)
+                    .concat("&slow_d_period=").concat(slow_d_period)
+                    .concat("&overbought=").concat(overbought)
+                    .concat("&oversold=").concat(oversold);
+
+            console.log(url);
+            d3.json(url, function(err, data) {
+                if (err) throw err;
+                console.log(data);
+                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
+            });
             break;
         case "StochRsi":
-            // code block
+            // common fields 
+            long_only = document.getElementById("long_only").value;
+            date_range = document.getElementById("date_range").value;
+            // strategy specific
+            time_period = document.getElementById("rsi_time_period").value;
+            fast_k_period = document.getElementById("rsi_fast_k_period").value;
+            slow_k_period = document.getElementById("rsi_slow_k_period").value;
+            slow_d_period = document.getElementById("rsi_slow_d_period").value;
+            overbought = document.getElementById("rsi_overbought").value;
+            oversold = document.getElementById("rsi_oversold").value;
+
+            // /vs_buy_and_hold?stock_ticker=SPY&strategy=StochRsi&date_range=1y&long_only=Yes&fast_k_period=3&slow_k_period=15&slow_d_period=21&overbought=80&oversold=20&time_period=10
+            url = "/vs_buy_and_hold?"
+                    .concat("stock_ticker=").concat(stock_ticker)
+                    .concat("&strategy=").concat(strategy)
+                    .concat("&long_only=").concat(long_only)
+                    .concat("&date_range=").concat(date_range)
+                    .concat("&time_period=").concat(time_period)
+                    .concat("&fast_k_period=").concat(fast_k_period)
+                    .concat("&slow_k_period=").concat(slow_k_period)
+                    .concat("&slow_d_period=").concat(slow_d_period)
+                    .concat("&overbought=").concat(overbought)
+                    .concat("&oversold=").concat(oversold);
+
+            console.log(url);
+            d3.json(url, function(err, data) {
+                if (err) throw err;
+                console.log(data);
+                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
+            });
             break;
         default:
             window.alert("Not supported strategy: ".concat(strategy));
