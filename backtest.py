@@ -31,19 +31,37 @@ def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=1_000_000, commissio
     equity_trades = {}
     periods = ['0.5', '1', '2', 2020, 2019, 2018, 2017, 2016]
 
+    
     for s in avail_strats:
         for period in periods:
-            if isinstance(period, str):
-                data = ydata.iloc[-int(float(period)*252):]
-            elif isinstance(period, int):
-                data = ydata.loc["{}-12-31".format(period-1):"{}-12-31".format(period),]
+            ## Satoshi added on 3.24.2021 to handle Arima_Pred strategy
+            if s.__name__ == 'ARIMA_Pred' :
+                if ticker in ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']:
+                    
+                    Arima_df = pd.read_csv(f'csv_files/{ticker}.csv', index_col="Date")
+                    Arima_df = Arima_df.asfreq('D')
+                    if isinstance(period, str):
+                        TimeSeries_data = Arima_df.iloc[-int(float(period)*365):]
+                    elif isinstance(period, int):
+                        TimeSeries_data = Arima_df.loc["{}-12-31".format(period-1):"{}-12-31".format(period),]
+                    # No data
+                    if TimeSeries_data.shape[0] == 0:
+                        continue
+                    bt = Backtest(TimeSeries_data, s, cash=cash, commission=commission)
+                    stats = bt.run()  
+                else: pass       
+            
+            else:
+                if isinstance(period, str):
+                    data = ydata.iloc[-int(float(period)*252):]
+                elif isinstance(period, int):
+                    data = ydata.loc["{}-12-31".format(period-1):"{}-12-31".format(period),]
+                # No data
+                if data.shape[0] == 0:
+                    continue
+                bt = Backtest(data, s, cash=cash, commission=commission)
+                stats = bt.run()
 
-            # No data
-            if data.shape[0] == 0:
-                continue
-
-            bt = Backtest(data, s, cash=cash, commission=commission)
-            stats = bt.run()
             sname = str(stats["_strategy"])
             sname_temp.append("{}_{}".format(sname, period))
             temp.append(stats[:27])

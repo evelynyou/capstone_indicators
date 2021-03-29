@@ -168,4 +168,26 @@ class StochRsi(Strategy):
             if self.long_only == 0:
                 self.sell()
                 
-                
+
+class LogReg_Signal(Strategy): 
+    # Define parameters of the strategy
+    buy_signal = 1
+    sell_signal = -1
+    long_only = 1
+    
+    def init(self):
+        # Compute signal
+        self.lr_sig = self.I(LR_SIGNAL, self.data)
+        
+    def next(self):
+        # If RSI enters oversold territory
+        if self.lr_sig == self.buy_signal:
+            if self.long_only == 0:
+                self.position.close()
+            self.buy()
+        
+        # If RSI enters overbought territory
+        elif self.lr_sig == self.sell_signal:
+            self.position.close()
+            if self.long_only == 0:
+                self.sell()
