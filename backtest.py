@@ -38,7 +38,7 @@ def backtest_with_all_strats(ticker: str, ydata: pd.DataFrame, cash: int=1_000_0
             if s.__name__ == 'ARIMA_Pred':
                 if ticker in prestored:
                     
-                    Arima_df = pd.read_csv(f'csv_files/{ticker}.csv', index_col="Date")
+                    Arima_df = pd.read_csv('ARIMA_csv_files/{}.csv'.format(ticker), index_col="Date")
                     Arima_df = Arima_df.asfreq('D')
                     if isinstance(period, str):
                         TimeSeries_data = Arima_df.iloc[-int(float(period)*365):]
