@@ -27,3 +27,49 @@ def daily_process():
         pbos = pd.DataFrame(pbos, columns=["strategy", "pbo"])
         pbos["datetime"] = date.today().strftime("%d/%m/%Y")
         pbos.to_csv("reliability_pbo/{}_pbo.csv".format(ticker), index=False)
+
+
+### Satoshi added for Arima Signal Dataframes on 3.28.2021 ###
+
+# Getting the last 6 years data at once
+def get_ydata(ticker):
+    data = yf.download(ticker, period="6y")
+    data = data.asfreq('D')
+    data = data.ffill()
+    return data
+
+# Making a function to create prediction of days future
+# Based on given data, returning "days" future predicted price
+def arima_fcst(p, q, d, data, days):
+    model = ARIMA(data['Close'], order=(p,d,q))
+    results = model.fit()
+    fcst = results.predict(len(data),len(data)+40, dynamic=False, typ='levels')  #.rename('ARIMA Forecast') #levels, linear
+    return fcst[days]
+
+tickers = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
+
+# Setting parameters
+p = 0
+d = 1
+q = 3
+days = 5 
+
+ARIMA_df_list = []
+
+# Getting ARIMA signals for each ticker
+for ticker in tickers:
+    data = get_ydata(ticker)
+    
+    ARIMA_pred = []
+    
+    for n in range(len(data)-50):
+        ARIMA_pred.append(arima_fcst(p, q, d, data.iloc[0+n:50+n], days))      
+        
+    data2 = data[50:]
+    data2['ARIMA_Pred'] = ARIMA_pred
+    data2['Arima_Signal'] = data2['ARIMA_Pred']/data2['Close']
+    
+    ARIMA_df_list.append(data2)
+
+for n in range(len(tickers)):
+    ARIMA_df_list[n].to_csv(f'ARIMA_csv_files/{tickers[n]}.csv', index=True)
