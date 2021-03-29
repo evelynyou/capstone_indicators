@@ -311,48 +311,48 @@ def LR_SIGNAL(data):
     return data['LR_Signal']
 	
 
-class LogReg_Signal(Strategy): 
-    # Define parameters of the strategy
-    buy_signal = 1
-    sell_signal = -1
-    long_only = 1
+# class LogReg_Signal(Strategy): 
+#     # Define parameters of the strategy
+#     buy_signal = 1
+#     sell_signal = -1
+#     long_only = 1
     
-    def init(self):
-        # Compute signal
-        self.lr_sig = self.I(LR_SIGNAL, self.data)
+#     def init(self):
+#         # Compute signal
+#         self.lr_sig = self.I(LR_SIGNAL, self.data)
         
-    def next(self):
-        # If RSI enters oversold territory
-        if self.lr_sig == self.buy_signal:
-            if self.long_only == 0:
-                self.position.close()
-            self.buy()
+#     def next(self):
+#         # If RSI enters oversold territory
+#         if self.lr_sig == self.buy_signal:
+#             if self.long_only == 0:
+#                 self.position.close()
+#             self.buy()
         
-        # If RSI enters overbought territory
-        elif self.lr_sig == self.sell_signal:
-            self.position.close()
-            if self.long_only == 0:
-                self.sell()
+#         # If RSI enters overbought territory
+#         elif self.lr_sig == self.sell_signal:
+#             self.position.close()
+#             if self.long_only == 0:
+#                 self.sell()
 
 
-## Demo and export to CSV file
+# ## Demo and export to CSV file
 
-model, signal_data = generate_lrmodel("SPY", buy_threshold=0.01, sell_threshold=-0.01)
-data = signal_data
-strategy = LogReg_Signal
+# model, signal_data = generate_lrmodel("SPY", buy_threshold=0.01, sell_threshold=-0.01)
+# data = signal_data
+# strategy = LogReg_Signal
 
-# Run backtesting
-bt = Backtest(data, strategy, cash=1_000_000, commission=0)
-stats = bt.run()
+# # Run backtesting
+# bt = Backtest(data, strategy, cash=1_000_000, commission=0)
+# stats = bt.run()
 
-# Display stats and plot results
-print(stats)
-bt.plot()
+# # Display stats and plot results
+# print(stats)
+# bt.plot()
 
-## Export to CSV: tickers we will pre-generate model results for
-tickers = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
+# ## Export to CSV: tickers we will pre-generate model results for
+# tickers = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
 
-## Export to csv if easier to process
-for ticker in tickers:
-    model, signal_data = generate_lrmodel(ticker, buy_threshold=0.01, sell_threshold=-0.01)
-    signal_data.to_csv("lr_signal_data/" + ticker + "_lr_signal.csv")
+# ## Export to csv if easier to process
+# for ticker in tickers:
+#     model, signal_data = generate_lrmodel(ticker, buy_threshold=0.01, sell_threshold=-0.01)
+#     signal_data.to_csv("lr_signal_data/" + ticker + "_lr_signal.csv")

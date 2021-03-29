@@ -1,4 +1,5 @@
 import backtest
+import logistic_regression
 import get_data
 import pandas as pd
 
@@ -9,6 +10,7 @@ def daily_process():
     corresponding_dict = {'SmaCross':backtest.sma_reliability, 
                       'MacdSignal':backtest.macd_reliability,
                       'RsiSignal':backtest.rsi_reliability}
+    
     for ticker in tickers:
         stock_obj = get_data.yFinData(ticker)
         try:
@@ -27,6 +29,10 @@ def daily_process():
         pbos = pd.DataFrame(pbos, columns=["strategy", "pbo"])
         pbos["datetime"] = date.today().strftime("%d/%m/%Y")
         pbos.to_csv("reliability_pbo/{}_pbo.csv".format(ticker), index=False)
+        
+        # logistic regression
+        model, signal_data = logistic_regression.generate_lrmodel(ticker, buy_threshold=0.01, sell_threshold=-0.01)
+        signal_data.to_csv("lr_signal_data/" + ticker + "_lr_signal.csv")
 
 
 ### Satoshi added for Arima Signal Dataframes on 3.28.2021 ###

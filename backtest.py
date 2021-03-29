@@ -30,13 +30,13 @@ def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=1_000_000, commissio
     sname_temp = []
     equity_trades = {}
     periods = ['0.5', '1', '2', 2020, 2019, 2018, 2017, 2016]
-
+    prestored = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
     
     for s in avail_strats:
         for period in periods:
             ## Satoshi added on 3.24.2021 to handle Arima_Pred strategy
-            if s.__name__ == 'ARIMA_Pred' :
-                if ticker in ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']:
+            if s.__name__ == 'ARIMA_Pred':
+                if ticker in prestored:
                     
                     Arima_df = pd.read_csv(f'csv_files/{ticker}.csv', index_col="Date")
                     Arima_df = Arima_df.asfreq('D')
@@ -50,7 +50,19 @@ def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=1_000_000, commissio
                     bt = Backtest(TimeSeries_data, s, cash=cash, commission=commission)
                     stats = bt.run()  
                 else: pass       
-            
+            elif s.__name__ == 'LogReg_Signal':
+                if ticker in prestored:
+                    logsignal_df = pd.read_csv("lr_signal_data/{}_lr_signal.csv".format(ticker), index_col="Date")
+                    if isinstance(period, str):
+                        logsignal_data = logsignal_df.iloc[-int(float(period)*252):]
+                    elif isinstance(period, int):
+                        logsignal_data = logsignal_df.loc["{}-12-31".format(period-1):"{}-12-31".format(period),]
+                    # No data
+                    if logsignal_data.shape[0] == 0:
+                        continue
+                    bt = Backtest(logsignal_data, s, cash=cash, commission=commission)
+                    stats = bt.run()
+                else: pass
             else:
                 if isinstance(period, str):
                     data = ydata.iloc[-int(float(period)*252):]
