@@ -52,8 +52,7 @@ def backtest_with_all_strats(ticker: str, ydata: pd.DataFrame, cash: int=1_000_0
                 else: pass       
             elif s.__name__ == 'LogReg_Signal':
                 if ticker in prestored:
-                    logsignal_df = pd.read_csv("lr_signal_data/{}_lr_signal.csv".format(ticker), index_col="Date")
-                    logsignal_df = logsignal_df.set_index('Datetime')
+                    logsignal_df = pd.read_csv("lr_signal_data/{}_lr_signal.csv".format(ticker), index_col="Date", parse_dates=True)
                     if isinstance(period, str):
                         logsignal_data = logsignal_df.iloc[-int(float(period)*252):]
                     elif isinstance(period, int):
