@@ -9,6 +9,8 @@ RSI = abstract.RSI
 STOCH = abstract.STOCH
 STOCHRSI = abstract.STOCHRSI
 
+LR_SIGNAL = lambda data: data['LR_Signal']
+
 def modCloseStrategy(strategy, close, *args):
     converted = []
     for arg in args:
@@ -22,3 +24,9 @@ def modHLCStrategy(strategy, high, low, close, *args):
         if np.issubdtype(arg, np.integer):
             converted.append(arg.item())
     return strategy(high, low, close, *converted)
+
+def LR_SIGNAL(data):
+    return data['LR_Signal']
+
+def ARIMA_SIGNAL(data):
+    return data['Arima_Signal']

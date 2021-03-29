@@ -168,8 +168,7 @@ class StochRsi(Strategy):
             if self.long_only == 0:
                 self.sell()
 
-def ARIMA_SIGNAL(data):
-    return data['Arima_Signal']
+                
 ## Satoshi added new strategy on 03.28.2021
 class ARIMA_Pred(Strategy):
     low = 0.98
@@ -177,7 +176,7 @@ class ARIMA_Pred(Strategy):
     long_only = 1
     
     def init(self):
-        self.signal = self.I(ARIMA_SIGNAL, self.data)
+        self.signal = self.data.Arima_Signal
             
     def next(self):
         if self.signal > self.high:  
@@ -190,9 +189,7 @@ class ARIMA_Pred(Strategy):
             if self.long_only == 0:
                 self.sell()
                 
-def LR_SIGNAL(data):
-    return data['LR_Signal']
-
+                
 class LogReg_Signal(Strategy): 
     # Define parameters of the strategy
     buy_signal = 1
@@ -201,7 +198,7 @@ class LogReg_Signal(Strategy):
     
     def init(self):
         # Compute signal
-        self.lr_sig = self.I(LR_SIGNAL, self.data)
+        self.lr_sig = self.data.LR_Signal
         
     def next(self):
         # If RSI enters oversold territory
