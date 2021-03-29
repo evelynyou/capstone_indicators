@@ -56,7 +56,7 @@ def run_backtests():
         return json.dumps({'err_msg': 'Unable to download stock data, please check the ticker!'})
     
     # backtest
-    backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ydata, cash, commission)
+    backtest_returns, backtest_trades = backtest.backtest_with_all_strats(ticker, ydata, cash, commission)
     return backtest_returns.to_json()
 
 @app.route("/backtest_details")

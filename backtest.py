@@ -20,7 +20,7 @@ from io import BytesIO
 # Run backtesting
 avail_strats = [obj for name, obj in inspect.getmembers(strats, inspect.isclass) if obj.__module__ == 'strats']
 
-def backtest_with_all_strats(ydata: pd.DataFrame, cash: int=1_000_000, commission: float=0.) -> Tuple[pd.DataFrame, dict]:
+def backtest_with_all_strats(ticker: str, ydata: pd.DataFrame, cash: int=1_000_000, commission: float=0.) -> Tuple[pd.DataFrame, dict]:
     """
     backtest all strategies in strats.py
     input: stock OHLCV dataframe
