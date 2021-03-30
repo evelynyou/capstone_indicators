@@ -62,6 +62,14 @@ function backtest() {
                 populate_signal(table_body, data, metrics, "LogReg_Signal", "Logistic Regression", "table_cell_0"); 
 
                 //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
+                // Append footnote
+                
+                var foot_note = "[1] Only the following tickers are supported for strategy of Arima_Pred and LogReg_Signal: "
+                                .concat("SPY, QQQ, EEM, AAPL, MSFT, TSLA, GOOG, GOOGL");
+                d3.select("#indicator_table").append("p")
+                        .style("padding", "10px")
+                        .style("font-size", "10px")
+                        .style("font-family", "courier").text(foot_note);
             }
     );
 } 
@@ -190,10 +198,7 @@ function populate_signal(tbody,  // table body to append rows
         if (i == 0) {
           if (strategy_keyname == 'ARIMA_Pred' || strategy_keyname == 'LogReg_Signal') {
              strategy_displayname = strategy_displayname
-                        .concat("<br> <p style='color:red;'>")
-                        .concat("This strategy only support these <br>")
-                        .concat("tickers: SPY, QQQ, EEM, AAPL, MSFT <br>")
-                        .concat("AMZN, FB, GOOGL, GOOG, TSLA </p>");
+                        .concat('<sup>1</sup>');
           }
           tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(strategy_displayname);
           parameters_html = parameters_map[strategy_keyname];
