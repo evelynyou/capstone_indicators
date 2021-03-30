@@ -140,14 +140,33 @@ def get_back_test_comparasion(ydata: pd.DataFrame, strategy: str, data_range, st
     strat_returns.columns = sname_temp
     return strat_returns
 
-def get_backtest_plot(ydata, strat, cash=1_000_000, commission=0.):
+def get_backtest_plot(ticker, ydata, strat, cash=1_000_000, commission=0.):
     """
     get auto generated backtestplot
     input: stock OHLCV dataframe, strategy
     output: plot obj
     """
-    bt = Backtest(ydata, strat, cash=cash, commission=commission)
-    stats = bt.run()
+    prestored = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
+    if strat.__name__ == 'ARIMA_Pred':
+        if ticker in prestored:
+            Arima_df = pd.read_csv('ARIMA_csv_files/{}.csv'.format(ticker), index_col="Date")
+            Arima_df = Arima_df.asfreq('D')
+            if Arima_df .shape[0] != 0:
+                bt = Backtest(Arima_df, strat, cash=cash, commission=commission)
+                stats = bt.run()  
+        else: pass       
+    elif strat.__name__ == 'LogReg_Signal':
+        if ticker in prestored:
+            logsignal_df = pd.read_csv("lr_signal_data/{}_lr_signal.csv".format(ticker), index_col="Date", parse_dates=True)
+            # No data
+            if logsignal_df.shape[0] != 0:
+                bt = Backtest(logsignal_df, strat, cash=cash, commission=commission)
+                stats = bt.run()
+        else: pass
+    else: 
+        bt = Backtest(ydata, strat, cash=cash, commission=commission)
+        stats = bt.run()
+
     # Save plots to file
     filename = "./tmp_plots/" + str(time.time()) + ".html"
     bt.plot(filename = filename)

@@ -65,7 +65,7 @@ function backtest() {
                 // Append footnote
                 
                 var foot_note = "[1] Only the following tickers are supported for strategy of Arima_Pred and LogReg_Signal: "
-                                .concat("SPY, QQQ, EEM, AAPL, MSFT, TSLA, GOOG, GOOGL");
+                                .concat("SPY, QQQ, EEM, AAPL, MSFT, TSLA, GOOG, GOOGL, AMZN, FB");
                 d3.select("#indicator_table").append("p")
                         .style("padding", "10px")
                         .style("font-size", "10px")
