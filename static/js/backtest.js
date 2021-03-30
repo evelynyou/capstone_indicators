@@ -52,6 +52,14 @@ function backtest() {
 
                 insert_header_row(table_body);
                 populate_signal(table_body, data, metrics, "StochRsi", "Stochastic RSI", "table_cell_0"); 
+                add_table_separator(table_body);
+
+                insert_header_row(table_body);
+                populate_signal(table_body, data, metrics, "ARIMA_Pred", "ARIMA Time Series", "table_cell_1"); 
+                add_table_separator(table_body);
+
+                insert_header_row(table_body);
+                populate_signal(table_body, data, metrics, "LogReg_Signal", "Logistic Regression", "table_cell_0"); 
 
                 //populate_signal(table_body, data, metrics, "RsiSignal", "RSI Signal"); 
             }
@@ -153,7 +161,20 @@ function populate_signal(tbody,  // table body to append rows
 	                    Overbought <br> <input type='text' id='rsi_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
 	                    Oversold <br> <input type='text' id='rsi_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
 	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+	                 </div>`,
+	    "ARIMA_Pred": `<div style="text-align:center">
+	                    TODO <br> <input type='text' id='arima_1' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    TODO <br> <input type='text' id='arima_2' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    TODO <br> <input type='text' id='arima_3' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Long Only <br> <input type='text' id='arima_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+	                 </div>`,
+	    "LogReg_Signal": `<div style="text-align:center">
+	                    Return metric <br> <input type='text' id='reg_metric' value='Next 5 day' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Buy threshold <br> <input type='text' id='reg_buy' value='1%' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Sell threshold <br> <input type='text' id='reg_sell' value='-1%' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
 	                 </div>`
+
     };
 
 
@@ -167,7 +188,14 @@ function populate_signal(tbody,  // table body to append rows
 
         // Add Strategy, Parameters, just one row for each strategy.
         if (i == 0) {
-          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).text(strategy_displayname);
+          if (strategy_keyname == 'ARIMA_Pred' || strategy_keyname == 'LogReg_Signal') {
+             strategy_displayname = strategy_displayname
+                        .concat("<br> <p style='color:red;'>")
+                        .concat("This strategy only support these <br>")
+                        .concat("tickers: SPY, QQQ, EEM, AAPL, MSFT <br>")
+                        .concat("AMZN, FB, GOOGL, GOOG, TSLA </p>");
+          }
+          tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(strategy_displayname);
           parameters_html = parameters_map[strategy_keyname];
           tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(parameters_html);
         }
