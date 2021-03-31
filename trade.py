@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask import request
+from flask import Markup
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -79,7 +80,9 @@ def backtest_details():
             "SmaCross": strats.SmaCross,
             "RsiSignal": strats.RsiSignal,
             "StochOsci": strats.StochOsci,
-            "StochRsi": strats.StochRsi
+            "StochRsi": strats.StochRsi,
+            "LogReg_Signal": strats.LogReg_Signal,
+            "ARIMA_Pred": strats.ARIMA_Pred
     }
 
 
@@ -100,7 +103,7 @@ def backtest_details():
         return json.dumps({'err_msg': 'uable to download stock data.'})
     
     # Raw HTML file in string format
-    return backtest.get_backtest_plot(ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
+    return backtest.get_backtest_plot(ticker, ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
 
 
 @app.route("/details")
@@ -189,6 +192,9 @@ def reliability_test():
     corresponding_dict = {'SmaCross':backtest.sma_reliability, 
                           'MacdSignal':backtest.macd_reliability,
                           'RsiSignal':backtest.rsi_reliability}
+    if strategy not in corresponding_dict:
+        return "This strategy is not supported!"
+
     reliability_test = corresponding_dict[strategy]
     
     stock_obj = get_data.yFinData(ticker)
@@ -209,9 +215,15 @@ def reliability_test():
         pbo_df = pd.read_csv(os.path.join("reliability_pbo", ticker + "_pbo.csv"))
         pbo = pbo_df.loc[pbo_df["strategy"] == strategy, "pbo"].values[0]
         update_date = pbo_df.loc[pbo_df["strategy"] == strategy, "datetime"].values[0]
-        return train, test, corr, pbo, update_date
+        #return train, test, corr, pbo, update_date
+
+        return render_template('reliability_test.html',
+                               overfit_prob=pbo,
+                               chart_1=Markup(train),
+                               chart_2=Markup(test),
+                               chart_3=Markup(corr))
     else:
-        return None # print 'This ticker is not currently supported for reliability tests!'
+        return "This ticker is not currently supported for reliability tests!"
 
  
 @app.route("/how_it_works")
