@@ -35,9 +35,9 @@ def backtest_with_all_strats(ticker: str, ydata: pd.DataFrame, cash: int=1_000_0
     for s in avail_strats:
         for period in periods:
             ## Satoshi added on 3.24.2021 to handle Arima_Pred strategy
+            stats = None
             if s.__name__ == 'ARIMA_Pred':
                 if ticker in prestored:
-                    
                     Arima_df = pd.read_csv('ARIMA_csv_files/{}.csv'.format(ticker), index_col="Date")
                     Arima_df = Arima_df.asfreq('D')
                     if isinstance(period, str):
@@ -74,10 +74,11 @@ def backtest_with_all_strats(ticker: str, ydata: pd.DataFrame, cash: int=1_000_0
                 bt = Backtest(data, s, cash=cash, commission=commission)
                 stats = bt.run()
 
-            sname = str(stats["_strategy"])
-            sname_temp.append("{}_{}".format(sname, period))
-            temp.append(stats[:27])
-            equity_trades["{}_{}".format(sname, period)] = (stats["_equity_curve"], stats["_trades"])
+            if stats is not None:
+                sname = str(stats["_strategy"])
+                sname_temp.append("{}_{}".format(sname, period))
+                temp.append(stats[:27])
+                equity_trades["{}_{}".format(sname, period)] = (stats["_equity_curve"], stats["_trades"])
 
     strat_returns = pd.concat(temp, axis=1)
     strat_returns.columns = sname_temp
