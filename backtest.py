@@ -37,7 +37,6 @@ def backtest_with_all_strats(ticker: str, ydata: pd.DataFrame, cash: int=1_000_0
             ## Satoshi added on 3.24.2021 to handle Arima_Pred strategy
             if s.__name__ == 'ARIMA_Pred':
                 if ticker in prestored:
-                    
                     Arima_df = pd.read_csv('ARIMA_csv_files/{}.csv'.format(ticker), index_col="Date")
                     Arima_df = Arima_df.asfreq('D')
                     if isinstance(period, str):
