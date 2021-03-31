@@ -191,7 +191,8 @@ class ARIMA_Pred(Strategy):
             if self.long_only == 0:
                 self.sell()
 
-
+def get_lr_signal(data):
+    return data['LR_Signal']
                 
 class LogReg_Signal(Strategy): 
     # Define parameters of the strategy
@@ -201,7 +202,7 @@ class LogReg_Signal(Strategy):
     
     def init(self):
         # Compute signal
-        self.lr_sig = self.data.LR_Signal
+        self.lr_sig = self.I(get_lr_signal, self.data)
         
     def next(self):
         # If RSI enters oversold territory
