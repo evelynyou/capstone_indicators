@@ -79,7 +79,9 @@ def backtest_details():
             "SmaCross": strats.SmaCross,
             "RsiSignal": strats.RsiSignal,
             "StochOsci": strats.StochOsci,
-            "StochRsi": strats.StochRsi
+            "StochRsi": strats.StochRsi,
+            "LogReg_Signal": strats.LogReg_Signal,
+            "ARIMA_Pred": strats.ARIMA_Pred
     }
 
 
@@ -100,7 +102,7 @@ def backtest_details():
         return json.dumps({'err_msg': 'uable to download stock data.'})
     
     # Raw HTML file in string format
-    return backtest.get_backtest_plot(ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
+    return backtest.get_backtest_plot(ticker, ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
 
 
 @app.route("/details")
