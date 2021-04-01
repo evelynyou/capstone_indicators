@@ -76,6 +76,7 @@ function render_custom_parameters() {
 	                    Fast D Period &nbsp;&nbsp; <input type='number' id='rsi_fast_d_period' value='3'  class='parameter_input'> <br>
 	                    Overbought &nbsp;&nbsp; <input type='number' id='rsi_overbought' value='80'  class='parameter_input'> <br>
 	                    Oversold &nbsp;&nbsp; <input type='number' id='rsi_oversold' value='20'  class='parameter_input'> <br>
+
                         Long Only &nbsp; &nbsp; <select id="long_only" class='parameter_input'> 
                                 <option value="Yes">Yes</option>
                                 <option value="No">No (Long + Short)</option>
@@ -91,7 +92,28 @@ function render_custom_parameters() {
                                 <option value="2017">2017</option>
                                 <option value="2016">2016</option>
                         </select>
+	                 </div>`,
+        "ARIMA_Pred":
+                      `<div style="text-align:right">
+
+                        P  &nbsp; &nbsp; <input type='text' id='arima_1' value='0' style='background-color:#e8e8e8;' class='parameter_input' readonly> <br>
+                        D  &nbsp; &nbsp; <input type='text' id='arima_2' value='1' style='background-color:#e8e8e8;' class='parameter_input' readonly> <br>
+                        Q  &nbsp; &nbsp; <input type='text' id='arima_3' value='3' style='background-color:#e8e8e8;' class='parameter_input' readonly> <br>
+                         
+                        Long Only &nbsp;&nbsp;  <input type='text' id='arima_long_only' value='Yes' style='background-color:#e8e8e8;' class='parameter_input' readonly> <br>
+                        Date Range &nbsp;&nbsp; <input type='text' id='arima_date_range' value='2y' style='background-color:#e8e8e8;' class='parameter_input' readonly>
+
+	                 </div>`,
+        "LogReg_Signal":
+                      `<div style="text-align:right">
+	                    Return metric &nbsp;&nbsp; <input type='text' id='log_return_metric' value='Next 5 day'  style='background-color:#e8e8e8;'  class='parameter_input' readonly> <br>
+	                    Buy threshold &nbsp;&nbsp; <input type='text' id='log_overbought' value='1%'  style='background-color:#e8e8e8;'  class='parameter_input' readonly> <br>
+	                    Sell threshold &nbsp;&nbsp; <input type='text' id='log_oversold' value='-1%'  style='background-color:#e8e8e8;'  class='parameter_input' readonly> <br>
+
+                        Long Only &nbsp;&nbsp;  <input type='text' id='log_long_only' value='Yes' style='background-color:#e8e8e8;'  class='parameter_input' readonly> <br>
+                        Date Range &nbsp;&nbsp; <input type='text' id='log_date_range' value='2y' style='background-color:#e8e8e8;'  class='parameter_input' readonly>
 	                 </div>`
+ 
     };
 
     parameters_html = parameters_map[strategy];

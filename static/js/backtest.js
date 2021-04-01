@@ -16,20 +16,20 @@ function backtest() {
                 if (err) throw err;
                 console.log(data);
 
-		if ('err_msg' in data) {
+        if ('err_msg' in data) {
                   var err_msg = "<p style='color:red;font-size:25px;font-family:courier;'>"
                                         .concat(data.err_msg)
                                         .concat("</p>");
                   d3.select("#indicator_table").html(err_msg);
                   return;
-		}
+        }
 
                 // document.getElementById("indicator_table").innerHTML = JSON.stringify(data); 
                 
                 // Metrics we care about.
                 var metrics = ["Return [%]", "Return (Ann.) [%]", "Exposure Time [%]", "Win Rate [%]", "# Trades",
-			"Volatility (Ann.) [%]", "Max. Drawdown [%]", "Avg. Drawdown [%]",
-			"Sharpe Ratio", "Sortino Ratio", "Calmar Ratio"];
+            "Volatility (Ann.) [%]", "Max. Drawdown [%]", "Avg. Drawdown [%]",
+            "Sharpe Ratio", "Sortino Ratio", "Calmar Ratio"];
 
                 // Create table and set up the headers
                 var table_body =  populate_header();
@@ -142,46 +142,46 @@ function populate_signal(tbody,  // table body to append rows
                 strategy_keyname.concat("_2017"), strategy_keyname.concat("_2016")]; 
 
     var parameters_map = {
-	    "BuyAndHold": "",
-	    "SmaCross": `<div style="text-align:center">
-	                    Short SMA <br> <input type='text' id='sma_short_sma' value='3' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
-	                    Long SMA <br> <input type='text' id='sma_long_sma' value='15' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Long Only <br> <input type='text' id='sma_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
-	                 </div>`,
-	    "MacdSignal": `<div style="text-align:center">
-	                    Fast Period <br> <input type='text' id='macd_fast_period' value='12' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
-	                    Slow Period <br> <input type='text' id='macd_slow_period' value='26' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Signal Period <br> <input type='text' id='macd_signal_period' value='9' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Long Only <br> <input type='text' id='macd_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
-	                 </div>`,
-	    "StochOsci": `<div style="text-align:center">
-	                    Fast K Period <br> <input type='text' id='osci_fast_k_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
-	                    Slow K Period <br> <input type='text' id='osci_slow_k_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Slow D Period <br> <input type='text' id='osci_slow_d_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Overbought <br> <input type='text' id='osci_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Oversold <br> <input type='text' id='osci_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Long Only <br> <input type='text' id='osci_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
-	                 </div>`,
-	    "StochRsi": `<div style="text-align:center">
-	                    Time Period <br> <input type='text' id='rsi_time_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
-	                    Fast K Period <br> <input type='text' id='rsi_fast_k_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Fast D Period <br> <input type='text' id='rsi_fast_d_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Overbought <br> <input type='text' id='rsi_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Oversold <br> <input type='text' id='rsi_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
-	                 </div>`,
-	    "ARIMA_Pred": `<div style="text-align:center">
-	                    TODO <br> <input type='text' id='arima_1' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    TODO <br> <input type='text' id='arima_2' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    TODO <br> <input type='text' id='arima_3' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Long Only <br> <input type='text' id='arima_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
-	                 </div>`,
-	    "LogReg_Signal": `<div style="text-align:center">
-	                    Return metric <br> <input type='text' id='reg_metric' value='Next 5 day' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Buy threshold <br> <input type='text' id='reg_buy' value='1%' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Sell threshold <br> <input type='text' id='reg_sell' value='-1%' style='background-color:#e8e8e8;' size='18%' readonly> <br>
-	                    Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
-	                 </div>`
+        "BuyAndHold": "",
+        "SmaCross": `<div style="text-align:center">
+                        Short SMA <br> <input type='text' id='sma_short_sma' value='3' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+                        Long SMA <br> <input type='text' id='sma_long_sma' value='15' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Long Only <br> <input type='text' id='sma_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+                     </div>`,
+        "MacdSignal": `<div style="text-align:center">
+                        Fast Period <br> <input type='text' id='macd_fast_period' value='12' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+                        Slow Period <br> <input type='text' id='macd_slow_period' value='26' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Signal Period <br> <input type='text' id='macd_signal_period' value='9' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Long Only <br> <input type='text' id='macd_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+                     </div>`,
+        "StochOsci": `<div style="text-align:center">
+                        Fast K Period <br> <input type='text' id='osci_fast_k_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+                        Slow K Period <br> <input type='text' id='osci_slow_k_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Slow D Period <br> <input type='text' id='osci_slow_d_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Overbought <br> <input type='text' id='osci_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Oversold <br> <input type='text' id='osci_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Long Only <br> <input type='text' id='osci_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+                     </div>`,
+        "StochRsi": `<div style="text-align:center">
+                        Time Period <br> <input type='text' id='rsi_time_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly>  <br>
+                        Fast K Period <br> <input type='text' id='rsi_fast_k_period' value='14' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Fast D Period <br> <input type='text' id='rsi_fast_d_period' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Overbought <br> <input type='text' id='rsi_overbought' value='80' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Oversold <br> <input type='text' id='rsi_oversold' value='20' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+                     </div>`,
+        "ARIMA_Pred": `<div style="text-align:center">
+                        P <br> <input type='text' id='arima_1' value='0' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        D <br> <input type='text' id='arima_2' value='1' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Q <br> <input type='text' id='arima_3' value='3' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Long Only <br> <input type='text' id='arima_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+                     </div>`,
+        "LogReg_Signal": `<div style="text-align:center">
+                        Return metric <br> <input type='text' id='reg_metric' value='Next 5 day' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Buy threshold <br> <input type='text' id='reg_buy' value='1%' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Sell threshold <br> <input type='text' id='reg_sell' value='-1%' style='background-color:#e8e8e8;' size='18%' readonly> <br>
+                        Long Only <br> <input type='text' id='rsi_long_only' value='Yes' style='background-color:#e8e8e8;' size='18%' readonly>
+                     </div>`
 
     };
 
@@ -226,18 +226,24 @@ function populate_signal(tbody,  // table body to append rows
 
         // Add details column
         if (i == 0) {
-	  //detail_page_url = "/backtest_details?stock_ticker=";
-	  detail_page_url = "/details?stock_ticker=";
-          detail_page_url = detail_page_url.concat(ticker);
-          detail_page_url = detail_page_url.concat("&strategy=");
-          detail_page_url = detail_page_url.concat(strategy_keyname);
-          var cell_text = "<a href=";
-	  cell_text = cell_text.concat(detail_page_url);
-          cell_text = cell_text.concat(" target=_blank>Details</a>");
-	  console.log(cell_text);
-          tbody_tr.append("td").attr("rowspan", metrics.length)
-			.attr("class", cell_class).html(cell_text);
-	}
+            var dtext = ""
+            if (strategy_keyname != 'BuyAndHold') {
+                dtext = "Details"
+            }
+            //detail_page_url = "/backtest_details?stock_ticker=";
+            detail_page_url = "/details?stock_ticker=";
+            detail_page_url = detail_page_url.concat(ticker);
+            detail_page_url = detail_page_url.concat("&strategy=");
+            detail_page_url = detail_page_url.concat(strategy_keyname);
+            var cell_text = "<a href=";
+            cell_text = cell_text.concat(detail_page_url);
+            cell_text = cell_text.concat(" target=_blank>");
+            cell_text = cell_text.concat(dtext);
+            cell_text = cell_text.concat("</a>");
+            console.log(cell_text);
+            tbody_tr.append("td").attr("rowspan", metrics.length)
+                .attr("class", cell_class).html(cell_text);
+        }
     }  
 }  
 
