@@ -193,7 +193,7 @@ def reliability_test():
                           'MacdSignal':backtest.macd_reliability,
                           'RsiSignal':backtest.rsi_reliability}
     if strategy not in corresponding_dict:
-        return "This strategy is not supported!"
+        return "The reliability test charts are not supported for this strategy."
 
     reliability_test = corresponding_dict[strategy]
     
@@ -219,11 +219,12 @@ def reliability_test():
 
         return render_template('reliability_test.html',
                                overfit_prob=pbo,
+                               update_date=update_date,
                                chart_1=Markup(train),
                                chart_2=Markup(test),
                                chart_3=Markup(corr))
     else:
-        return "This ticker is not currently supported for reliability tests!"
+        return "The reliability test charts are not supported for this ticker."
 
  
 @app.route("/how_it_works")
