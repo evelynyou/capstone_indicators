@@ -110,7 +110,7 @@ function insert_header_row(tbody) {
     tbody_tr.append("td").attr("class", 'table_header_cell').text("Parameters");
     tbody_tr.append("td").attr("class", 'table_header_cell').text("Metric");
 
-    tbody_tr.append("td").attr("class", 'table_header_cell').text("6-Montd");
+    tbody_tr.append("td").attr("class", 'table_header_cell').text("6-Month");
     tbody_tr.append("td").attr("class", 'table_header_cell').text("1-Year");
     tbody_tr.append("td").attr("class", 'table_header_cell').text("2-Year");
 
