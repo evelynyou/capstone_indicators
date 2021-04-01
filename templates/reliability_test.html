@@ -15,17 +15,32 @@
 
 <body>
     <div class='col-xs-12 col-md-12'>
-        <p> Probability of overfitting: {{ overfit_prob }}  </p>
+        <p> <b>Probability of overfitting:</b> {{ overfit_prob }}  </p>
     </div>
 
     <div class='col-xs-12 col-md-12'>
-        <p> Last updated date: {{ update_date }}  </p>
+        <p> <b>Last updated date:</b> {{ update_date }}  </p>
     </div>
 
 
-    <div class='col-xs-12 col-md-12'> {{ chart_1 }}  </div>
-    <div class='col-xs-12 col-md-12'> {{ chart_2 }} </div>
-    <div class='col-xs-12 col-md-12'> {{ chart_3 }} </div>
+
+    <div class='col-xs-12 col-md-12'> 
+        <hr>
+        <p><b>Training Set:</b></p>
+        {{ train_chart }}
+    </div>
+
+    <div class='col-xs-12 col-md-12'>
+        <hr>
+        <p><b>Testing Set:</b></p>
+         {{ test_chart }} 
+    </div>
+
+    <div class='col-xs-12 col-md-12'>
+        <hr>
+        <p><b>Correlation:</b></p>
+        {{ corr_chart }} 
+    </div>
 
 </body>
 </html>

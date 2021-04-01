@@ -220,9 +220,9 @@ def reliability_test():
         return render_template('reliability_test.html',
                                overfit_prob=pbo,
                                update_date=update_date,
-                               chart_1=Markup(train),
-                               chart_2=Markup(test),
-                               chart_3=Markup(corr))
+                               train_chart=Markup(train),
+                               test_chart=Markup(test),
+                               corr_chart=Markup(corr))
     else:
         return "The reliability test charts are not supported for this ticker."
 
