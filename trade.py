@@ -171,6 +171,8 @@ def read_files(ticker, strategy):
         with open(file, 'r') as f:
             data = f.read().replace('\n', '')
         return data
+
+
     starts = ticker + "_" + strategy
     folder = "reliability_plots"
     for filename in os.listdir(folder):
@@ -189,6 +191,11 @@ def reliability_test():
     preload = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
     ticker = request.args.get('stock_ticker')
     strategy = request.args.get('strategy')
+
+    # HTTP param is differnet from file prefix, re-map it.
+    if strategy == "StochRsi":
+        strategy = "RsiSignal"
+
     corresponding_dict = {'SmaCross':backtest.sma_reliability, 
                           'MacdSignal':backtest.macd_reliability,
                           'RsiSignal':backtest.rsi_reliability}
