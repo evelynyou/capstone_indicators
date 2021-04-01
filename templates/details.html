@@ -24,6 +24,12 @@
 
     <!-- Custom JS -->
     <script src="/static/js/details.js"></script> 
+
+    <script>
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+        }
+   </script>
 </head>
 
 <body>
@@ -81,7 +87,7 @@
     <div class='col-xs-12 col-md-12 padding'>
        <div class='col-xs-12 col-md-2'> </div>    
        <div class='col-xs-12 col-md-8 border_line'>
-          <iframe frameborder="0" width="100%" height="800" 
+          <iframe frameborder="0" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"
                   src="/reliability_test?stock_ticker={{stock_ticker}}&strategy={{strategy}}"> </iframe>
        </div>
        <div class='col-xs-12 col-md-2'> </div>    
