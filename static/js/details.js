@@ -1,7 +1,7 @@
 /* Handle the search button click */
 
-function udpate_comparison_chart(chart_url) {
-    iframe_html = '<iframe frameborder="0" width="100%" height="300" src="'
+function update_comparison_chart(chart_url) {
+    iframe_html = '<iframe frameborder="0" width="100%" height="300px" src="'
                     .concat(chart_url)
                     .concat('"></iframe>')
     d3.select("#vs_buy_and_hold").html(iframe_html)
@@ -149,7 +149,7 @@ function refresh() {
                     .concat("&date_range=").concat(date_range);
 
             console.log(url);
-            udpate_comparison_chart(url);
+            update_comparison_chart(url);
             break;
 
         case "MacdSignal":
@@ -172,7 +172,7 @@ function refresh() {
                     .concat("&signal_period=").concat(signal_period);
 
             console.log(url);
-            udpate_comparison_chart(url);
+            update_comparison_chart(url);
             break;
 
         case "StochOsci":
@@ -199,7 +199,7 @@ function refresh() {
                     .concat("&oversold=").concat(oversold);
 
             console.log(url);
-            udpate_comparison_chart(url);
+            update_comparison_chart(url);
             break;
 
         case "StochRsi":
@@ -226,11 +226,11 @@ function refresh() {
                     .concat("&oversold=").concat(oversold);
 
             console.log(url);
-            udpate_comparison_chart(url);
+            update_comparison_chart(url);
             break;
 
         default:
-            window.alert("Not supported strategy: ".concat(strategy));
+            d3.select("#vs_buy_and_hold").html("<p>The comparison chart with buy-and-hold doesn't support this strategy</p>");
     }
 }
  
