@@ -1,5 +1,12 @@
 /* Handle the search button click */
 
+function udpate_comparison_chart(chart_url) {
+    iframe_html = '<iframe frameborder="0" width="100%" height="300" src="'
+                    .concat(chart_url)
+                    .concat('"></iframe>')
+    d3.select("#vs_buy_and_hold").html(iframe_html)
+}
+
 function render_custom_parameters() { 
     // base_url = "http://ec2-100-20-59-199.us-west-2.compute.amazonaws.com:8888/backtest?stock_ticker=";
     strategy =  document.getElementById("details_strategy").value;
@@ -142,11 +149,7 @@ function refresh() {
                     .concat("&date_range=").concat(date_range);
 
             console.log(url);
-            d3.json(url, function(err, data) {
-                if (err) throw err;
-                console.log(data);
-                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
-            });
+            udpate_comparison_chart(url);
             break;
 
         case "MacdSignal":
@@ -169,12 +172,9 @@ function refresh() {
                     .concat("&signal_period=").concat(signal_period);
 
             console.log(url);
-            d3.json(url, function(err, data) {
-                if (err) throw err;
-                console.log(data);
-                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
-            });
+            udpate_comparison_chart(url);
             break;
+
         case "StochOsci":
             // common fields 
             long_only = document.getElementById("long_only").value;
@@ -199,12 +199,9 @@ function refresh() {
                     .concat("&oversold=").concat(oversold);
 
             console.log(url);
-            d3.json(url, function(err, data) {
-                if (err) throw err;
-                console.log(data);
-                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
-            });
+            udpate_comparison_chart(url);
             break;
+
         case "StochRsi":
             // common fields 
             long_only = document.getElementById("long_only").value;
@@ -229,12 +226,9 @@ function refresh() {
                     .concat("&oversold=").concat(oversold);
 
             console.log(url);
-            d3.json(url, function(err, data) {
-                if (err) throw err;
-                console.log(data);
-                d3.select("#vs_buy_and_hold").text(JSON.stringify(data));
-            });
+            udpate_comparison_chart(url);
             break;
+
         default:
             window.alert("Not supported strategy: ".concat(strategy));
     }

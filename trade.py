@@ -8,6 +8,8 @@ import json
 import logging
 import strats
 import os
+import altair as alt
+import time
 
 # directly import sma
 import get_data, backtest
@@ -113,6 +115,53 @@ def details_page():
     return render_template('details.html', stock_ticker=ticker, strategy = strategy)
 
 
+# Input: data frame of 'vs-buy-and-hold' 
+# Output: raw HTML string
+def get_altair_chart(df):
+    ## Transform the dataframe for easier charting
+    data = df.transpose(copy=True)
+
+    ## Shorten the names of the strategies and defin the metrics we want to compare
+    strategies = ["Buy & Hold", "SMA Cross"]
+    metrics = ["Return (Ann.) [%]", "Exposure Time [%]", "Volatility (Ann.) [%]", 
+                "Max. Drawdown [%]", "Sharpe Ratio", "Sortino Ratio", "Calmar Ratio"]
+
+    ## Set width and height for the sub-charts
+    subchart_width = 60
+    subchart_height = 200
+    subcharts = list()
+
+    for i in range(len(metrics)):
+        ## Get the metric for each subchart
+        source = pd.DataFrame({
+            'Strategy': strategies,
+            'Metric': data[metrics[i]]})
+        ## Make the Altair chart
+        subchart = alt.Chart(source).mark_bar().encode(
+            alt.X('Strategy', 
+                axis=alt.Axis(title = '')
+                ),
+            alt.Y('Metric', 
+                axis=alt.Axis(title = metrics[i])
+                ),
+            tooltip=alt.Tooltip('Metric', format='.2f'),
+            color='Strategy'
+        ).properties(
+            width=subchart_width,
+            height=subchart_height
+        )
+        subcharts.append(subchart)
+
+    chart = (subcharts[0] | subcharts[1] | subcharts[2] | subcharts[3] | subcharts[4] | subcharts[5] | subcharts[6])
+
+    # Save/convert it to HTML, then read it back.
+    filename = "./tmp_plots/" + str(time.time()) + ".html"
+    chart.save(filename)
+    with open(filename, 'r') as file:
+        data = file.read().replace('\n', '')
+    return data
+
+
 @app.route("/vs_buy_and_hold")
 def vs_buy_and_hold():
     # Extract common parameters
@@ -162,9 +211,8 @@ def vs_buy_and_hold():
     
     backtest_returns = backtest.get_back_test_comparasion(ydata, strategy, date_range, strategy_specific_params,
                                                  cash=1_000_000, commission=0.)
-    
-    # this is same as run_backtests() but now with custom params and comparison of B/H and strategy
-    return backtest_returns.to_json()
+    # Convert data frame to Altair charts HTML string 
+    return get_altair_chart(backtest_returns)
 
 def read_files(ticker, strategy):
     def get_file(file):
