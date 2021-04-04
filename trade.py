@@ -123,8 +123,18 @@ def get_altair_chart(df):
 
     ## Shorten the names of the strategies and defin the metrics we want to compare
     strategies = ["Buy & Hold", "SMA Cross"]
-    metrics = ["Return (Ann.) [%]", "Exposure Time [%]", "Volatility (Ann.) [%]", 
-                "Max. Drawdown [%]", "Sharpe Ratio", "Sortino Ratio", "Calmar Ratio"]
+    metrics = [
+               "Return [%]",
+               "Return (Ann.) [%]",
+               "Exposure Time [%]",
+               "Win Rate [%]",
+               "# Trades",
+               "Volatility (Ann.) [%]", 
+               "Max. Drawdown [%]",
+               "Avg. Drawdown [%]",
+               "Sharpe Ratio",
+               "Sortino Ratio",
+               "Calmar Ratio"]
 
     ## Set width and height for the sub-charts
     subchart_width = 60
@@ -152,7 +162,8 @@ def get_altair_chart(df):
         )
         subcharts.append(subchart)
 
-    chart = (subcharts[0] | subcharts[1] | subcharts[2] | subcharts[3] | subcharts[4] | subcharts[5] | subcharts[6])
+    chart = (subcharts[0] | subcharts[1] | subcharts[2] | subcharts[3] | subcharts[4] | subcharts[5] |
+             subcharts[6] | subcharts[7] | subcharts[8] | subcharts[9] | subcharts[10])
 
     # Save/convert it to HTML, then read it back.
     filename = "./tmp_plots/" + str(time.time()) + ".html"
