@@ -10,19 +10,22 @@ function backtest() {
     console.log(ticker);
     console.log(data_url); 
 
+    loading_msg = "<hr><p style='padding: 10px; font-size: 20px; font-family: courier; color: red;'>Updating for ticker ".concat(ticker).concat(", please wait...</p>"); 
+    d3.select("#indicator_table").html(loading_msg);
+
     // https://bl.ocks.org/d3noob/473f0cf66196a008cf99 
     d3.json(data_url,
             function(err, data) {
                 if (err) throw err;
                 console.log(data);
 
-        if ('err_msg' in data) {
-                  var err_msg = "<p style='color:red;font-size:25px;font-family:courier;'>"
+                if ('err_msg' in data) {
+                    var err_msg = "<p style='color:red;font-size:25px;font-family:courier;'>"
                                         .concat(data.err_msg)
                                         .concat("</p>");
-                  d3.select("#indicator_table").html(err_msg);
-                  return;
-        }
+                    d3.select("#indicator_table").html(err_msg);
+                    return;
+                }
 
                 // document.getElementById("indicator_table").innerHTML = JSON.stringify(data); 
                 
