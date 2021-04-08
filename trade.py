@@ -137,7 +137,7 @@ def get_altair_chart(df, strategy):
                "Calmar Ratio"]
 
     ## Set width and height for the sub-charts
-    subchart_width = 60
+    subchart_width = 30
     subchart_height = 200
     subcharts = list()
 
