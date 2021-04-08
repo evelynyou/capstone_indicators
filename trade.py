@@ -117,12 +117,12 @@ def details_page():
 
 # Input: data frame of 'vs-buy-and-hold' 
 # Output: raw HTML string
-def get_altair_chart(df):
+def get_altair_chart(df, strategy):
     ## Transform the dataframe for easier charting
     data = df.transpose(copy=True)
 
     ## Shorten the names of the strategies and defin the metrics we want to compare
-    strategies = ["Buy & Hold", "SMA Cross"]
+    strategies = ["Buy & Hold", strategy]
     metrics = [
                "Return [%]",
                "Return (Ann.) [%]",
@@ -223,7 +223,7 @@ def vs_buy_and_hold():
     backtest_returns = backtest.get_back_test_comparasion(ydata, strategy, date_range, strategy_specific_params,
                                                  cash=1_000_000, commission=0.)
     # Convert data frame to Altair charts HTML string 
-    return get_altair_chart(backtest_returns)
+    return get_altair_chart(backtest_returns, strategy)
 
 def read_files(ticker, strategy):
     def get_file(file):
