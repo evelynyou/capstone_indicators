@@ -35,7 +35,7 @@
 <body>
   <center>
      <div class="header">
-         <h1> StockSense</h1>
+         <h1> <a href='https://lesterpjy.github.io/stocksense/index.html' style="color:#000000; text-decoration: none;">StockSense</a></h1>
          <p class='sub_header'> Assess reliability of common trading indicators! </p>
      </div>
 
@@ -67,6 +67,7 @@
     <div class='col-xs-12 col-md-12 padding'>
        <div class='col-xs-12 col-md-2'> </div>    
        <div class='col-xs-12 col-md-8 border_line'>
+          <div style="text-align:center"> <b>Performance Comparison Against BuyAndHold</b> </div>
           <div id="vs_buy_and_hold"> <b>Updating...</b></div>
        </div>
        <div class='col-xs-12 col-md-2'> </div>    
@@ -78,8 +79,12 @@
     <div class='col-xs-12 col-md-12 padding'>
        <div class='col-xs-12 col-md-2'> </div>    
        <div class='col-xs-12 col-md-8 border_line'>
-          <iframe frameborder="0" width="100%" height="800" 
+          <div style="text-align:center"> <b>Trading Details of Strategy {{strategy}} </b> </div>
+          <div id="trading_history_chart"> <b>Updating...</b></div>
+          <!--
+                <iframe frameborder="0" width="100%" height="800" 
                   src="/backtest_details?stock_ticker={{stock_ticker}}&strategy={{strategy}}"> </iframe>
+           -->
        </div>
        <div class='col-xs-12 col-md-2'> </div>    
     </div>
@@ -88,6 +93,7 @@
     <div class='col-xs-12 col-md-12 padding'>
        <div class='col-xs-12 col-md-2'> </div>    
        <div class='col-xs-12 col-md-8 border_line'>
+          <div style="text-align:center"> <b>Reliability Test of Strategy {{strategy}} </b> </div>
           <iframe frameborder="0" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"
                   src="/reliability_test?stock_ticker={{stock_ticker}}&strategy={{strategy}}"> </iframe>
        </div>

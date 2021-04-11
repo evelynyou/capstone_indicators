@@ -1,10 +1,18 @@
 /* Handle the search button click */
 
 function update_comparison_chart(chart_url) {
-    iframe_html = '<iframe frameborder="0" width="100%" height="300px" src="'
+    comparison_iframe_html = '<iframe frameborder="0" width="100%" height="300px" src="'
+                    .concat("vs_buy_and_hold?")
                     .concat(chart_url)
-                    .concat('"></iframe>')
-    d3.select("#vs_buy_and_hold").html(iframe_html)
+                    .concat('"></iframe>');
+
+    d3.select("#vs_buy_and_hold").html(comparison_iframe_html);
+    
+    trade_iframe_html = '<iframe frameborder="0" width="100%" height="800px" src="'
+                    .concat("backtest_details?")
+                    .concat(chart_url)
+                    .concat('"></iframe>');
+    d3.select("#trading_history_chart").html(trade_iframe_html);
 }
 
 function render_custom_parameters() { 
@@ -26,7 +34,7 @@ function render_custom_parameters() {
                         Date Range &nbsp; &nbsp; <select id="date_range" class='parameter_input'> 
                                 <option value="6m">last 6 month</option>
                                 <option value="1y">last 1 year</option>
-                                <option value="2y">last 2 years </option>
+                                <option value="2y" selected>last 2 years </option>
                                 <option value="2020">2020</option>
                                 <option value="2019">2019</option>
                                 <option value="2018">2018</option>
@@ -46,7 +54,7 @@ function render_custom_parameters() {
                         Date Range &nbsp; &nbsp; <select id="date_range" class='parameter_input'> 
                                 <option value="6m">last 6 month</option>
                                 <option value="1y">last 1 year</option>
-                                <option value="2y">last 2 years </option>
+                                <option value="2y" selected>last 2 years </option>
                                 <option value="2020">2020</option>
                                 <option value="2019">2019</option>
                                 <option value="2018">2018</option>
@@ -68,7 +76,7 @@ function render_custom_parameters() {
                         Date Range &nbsp; &nbsp; <select id="date_range" class='parameter_input'> 
                                 <option value="6m">last 6 month</option>
                                 <option value="1y">last 1 year</option>
-                                <option value="2y">last 2 years </option>
+                                <option value="2y" selected>last 2 years </option>
                                 <option value="2020">2020</option>
                                 <option value="2019">2019</option>
                                 <option value="2018">2018</option>
@@ -92,7 +100,7 @@ function render_custom_parameters() {
                         Date Range &nbsp; &nbsp; <select id="date_range" class='parameter_input'> 
                                 <option value="6m">last 6 month</option>
                                 <option value="1y">last 1 year</option>
-                                <option value="2y">last 2 years </option>
+                                <option value="2y" selected>last 2 years </option>
                                 <option value="2020">2020</option>
                                 <option value="2019">2019</option>
                                 <option value="2018">2018</option>
@@ -130,7 +138,8 @@ function render_custom_parameters() {
 function refresh() {
     strategy =  document.getElementById("details_strategy").value;
     stock_ticker =  document.getElementById("details_ticker").value;
-    d3.select("#vs_buy_and_hold").html("");
+    d3.select("#vs_buy_and_hold").html("<p>Updating...</p>");
+    d3.select("#trading_history_chart").html("<p>Updating...</p>");
 
     switch(strategy) {
         case "SmaCross":
@@ -140,8 +149,7 @@ function refresh() {
             long_only = document.getElementById("long_only").value;
             date_range = document.getElementById("date_range").value;
             // /vs_buy_and_hold?stock_ticker=SPY&strategy=SmaCross&date_range=1y&sma_slow=15&sma_fast=3&long_only=Yes
-            url = "/vs_buy_and_hold?"
-                    .concat("stock_ticker=").concat(stock_ticker)
+            url = "stock_ticker=".concat(stock_ticker)
                     .concat("&strategy=").concat(strategy)
                     .concat("&sma_slow=").concat(sma_slow)
                     .concat("&sma_fast=").concat(sma_fast)
@@ -162,8 +170,7 @@ function refresh() {
             signal_period = document.getElementById("macd_signal_period").value;
 
             // /vs_buy_and_hold?stock_ticker=SPY&strategy=MacdSignal&date_range=1y&long_only=Yes&fast_period=3&slow_period=15&signal_period=21
-            url = "/vs_buy_and_hold?"
-                    .concat("stock_ticker=").concat(stock_ticker)
+            url = "stock_ticker=".concat(stock_ticker)
                     .concat("&strategy=").concat(strategy)
                     .concat("&long_only=").concat(long_only)
                     .concat("&date_range=").concat(date_range)
@@ -187,8 +194,7 @@ function refresh() {
             oversold = document.getElementById("osci_oversold").value;
 
             // /vs_buy_and_hold?stock_ticker=SPY&strategy=StochOsci&date_range=1y&long_only=Yes&fast_k_period=3&slow_k_period=15&slow_d_period=21&overbought=80&oversold=20
-            url = "/vs_buy_and_hold?"
-                    .concat("stock_ticker=").concat(stock_ticker)
+            url = "stock_ticker=".concat(stock_ticker)
                     .concat("&strategy=").concat(strategy)
                     .concat("&long_only=").concat(long_only)
                     .concat("&date_range=").concat(date_range)
@@ -214,8 +220,7 @@ function refresh() {
             oversold = document.getElementById("rsi_oversold").value;
 
             // /vs_buy_and_hold?stock_ticker=SPY&strategy=StochRsi&date_range=1y&long_only=Yes&fast_k_period=3&slow_k_period=15&slow_d_period=21&overbought=80&oversold=20&time_period=10
-            url = "/vs_buy_and_hold?"
-                    .concat("stock_ticker=").concat(stock_ticker)
+            url = "stock_ticker=".concat(stock_ticker)
                     .concat("&strategy=").concat(strategy)
                     .concat("&long_only=").concat(long_only)
                     .concat("&date_range=").concat(date_range)

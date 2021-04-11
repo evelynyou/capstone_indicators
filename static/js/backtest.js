@@ -10,7 +10,7 @@ function backtest() {
     console.log(ticker);
     console.log(data_url); 
 
-    loading_msg = "<hr><p style='padding: 10px; font-size: 20px; font-family: courier; color: red;'>Updating for ticker ".concat(ticker).concat(", please wait...</p>"); 
+    loading_msg = "<hr><b><p style='padding: 10px; font-size: 20px; '>Updating for ticker ".concat(ticker).concat(", please wait...</p></b>"); 
     d3.select("#indicator_table").html(loading_msg);
 
     // https://bl.ocks.org/d3noob/473f0cf66196a008cf99 
@@ -72,7 +72,7 @@ function backtest() {
                 d3.select("#indicator_table").append("p")
                         .style("padding", "10px")
                         .style("font-size", "10px")
-                        .style("font-family", "courier").text(foot_note);
+                        .text(foot_note);
             }
     );
 } 
@@ -191,6 +191,7 @@ function populate_signal(tbody,  // table body to append rows
 
 
     ticker = document.getElementById("ticker").value;
+    ticker = ticker.toUpperCase();
 
     for (var i = 0; i < metrics.length; i++) {
         // Append one row for each metric
@@ -198,10 +199,15 @@ function populate_signal(tbody,  // table body to append rows
         var cur_metric = metrics[i]; 
 
         // Add Strategy, Parameters, just one row for each strategy.
+        var tech_details_link = '<br>(<a href=https://lesterpjy.github.io/stocksense/strats.html target=blank_>technical details</a>)';
         if (i == 0) {
           if (strategy_keyname == 'ARIMA_Pred' || strategy_keyname == 'LogReg_Signal') {
              strategy_displayname = strategy_displayname
-                        .concat('<sup>1</sup>');
+                        .concat('<sup>1</sup>')
+                        .concat(tech_details_link);
+          } else if (strategy_keyname != 'BuyAndHold') {
+             strategy_displayname = strategy_displayname
+                        .concat(tech_details_link);
           }
           tbody_tr.append("th").attr("rowspan", metrics.length).attr("class", cell_class).html(strategy_displayname);
           parameters_html = parameters_map[strategy_keyname];
@@ -229,10 +235,18 @@ function populate_signal(tbody,  // table body to append rows
 
         // Add details column
         if (i == 0) {
-            var dtext = ""
-            if (strategy_keyname != 'BuyAndHold') {
-                dtext = "Details"
+            dtext = "DeepDive"
+            // Don't show DeepDive link for BuyAndHold
+            if (strategy_keyname == 'BuyAndHold') {
+                dtext = ""
             }
+            if (strategy_keyname == 'ARIMA_Pred' || strategy_keyname == 'LogReg_Signal') {
+                if (ticker != "SPY" && ticker != "QQQ" && ticker != "EEM" && ticker != "AAPL" && ticker != "MSFT"
+                    && ticker != "TSLA" && ticker != "GOOG" && ticker != "GOOGL" && ticker != "AMZN" && ticker != "FB") {
+                    dtext = ""
+                }
+            }
+
             //detail_page_url = "/backtest_details?stock_ticker=";
             detail_page_url = "/details?stock_ticker=";
             detail_page_url = detail_page_url.concat(ticker);
