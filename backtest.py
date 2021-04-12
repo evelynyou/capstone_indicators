@@ -141,14 +141,14 @@ def get_back_test_comparasion(ydata: pd.DataFrame, strategy: str, data_range, st
     strat_returns.columns = sname_temp
     return strat_returns
 
-def get_backtest_plot(ticker, ydata, strat, cash=1_000_000, commission=0.):
+def get_backtest_plot(ticker, ydata, s, date_range, strategy_params, cash=1_000_000, commission=0.):
     """
     get auto generated backtestplot
     input: stock OHLCV dataframe, strategy
     output: plot obj
     """
     prestored = ['SPY', 'QQQ', 'EEM', 'AAPL', 'MSFT', 'AMZN', 'FB', 'GOOGL', 'GOOG', 'TSLA']
-    if strat.__name__ == 'ARIMA_Pred':
+    if s.__name__ == 'ARIMA_Pred':
         if ticker in prestored:
             Arima_df = pd.read_csv('ARIMA_csv_files/{}.csv'.format(ticker), index_col="Date")
             Arima_df = Arima_df.asfreq('D')
@@ -156,7 +156,7 @@ def get_backtest_plot(ticker, ydata, strat, cash=1_000_000, commission=0.):
                 bt = Backtest(Arima_df, strat, cash=cash, commission=commission)
                 stats = bt.run()  
         else: pass       
-    elif strat.__name__ == 'LogReg_Signal':
+    elif s.__name__ == 'LogReg_Signal':
         if ticker in prestored:
             logsignal_df = pd.read_csv("lr_signal_data/{}_lr_signal.csv".format(ticker), index_col="Date", parse_dates=True)
             # No data
@@ -165,8 +165,41 @@ def get_backtest_plot(ticker, ydata, strat, cash=1_000_000, commission=0.):
                 stats = bt.run()
         else: pass
     else: 
-        bt = Backtest(ydata, strat, cash=cash, commission=commission)
-        stats = bt.run()
+        # Slice the data according to date range
+        if not date_range.isdecimal():
+            corresponding = {"6m":0.5, "1y":1., "2y":2.}
+            data = ydata.iloc[-int(float(corresponding[date_range])*252):]
+        else:
+            data = ydata.loc["{}-12-31".format(int(date_range)-1):"{}-12-31".format(int(date_range)),]
+
+        bt = Backtest(data, s, cash=cash, commission=commission)
+        # Run it with correponding params
+        if s.__name__ == 'SmaCross':
+            stats = bt.run(slow = strategy_params['sma_slow'],
+                           fast = strategy_params['sma_fast'],
+                           long_only = strategy_params['long_only'])
+        elif s.__name__ == 'MacdSignal':
+            stats = bt.run(fastperiod = strategy_params['fast_period'],
+                           slowperiod = strategy_params['slow_period'],
+                           signalperiod = strategy_params['signal_period'],
+                           long_only = strategy_params['long_only'])
+        elif s.__name__ == 'StochOsci':
+            stats = bt.run(fastk_period = strategy_params['fast_k_period'],
+                           slowk_period = strategy_params['slow_k_period'],
+                           slowd_period = strategy_params['slow_d_period'],
+                           overbought = strategy_params['overbought'],
+                           oversold = strategy_params['oversold'],
+                           long_only = strategy_params['long_only'])
+        elif s.__name__ == 'StochRsi':
+            stats = bt.run(timeperiod = strategy_params['time_period'],
+                           fastk_period = strategy_params['fast_k_period'],
+                           fastd_period = strategy_params['fast_d_period'],
+                           overbought = strategy_params['overbought'],
+                           oversold = strategy_params['oversold'],
+                           long_only = strategy_params['long_only'])
+        else:
+            stats = bt.run()
+
 
     # Save plots to file
     filename = "./tmp_plots/" + str(time.time()) + ".html"

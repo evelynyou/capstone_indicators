@@ -87,7 +87,37 @@ def backtest_details():
             "ARIMA_Pred": strats.ARIMA_Pred
     }
 
+    # Prepare the obj to hold the parameters
+    long_only = request.args.get('long_only') # 'Yes' or 'No'
+    date_range = request.args.get('date_range') # '6m', '1y', '2y', '2016', '2017', '2018', '2019', '2020'
 
+    # Object to hold strategy specific parameters
+    strategy_specific_params = {}
+    if (strategy == 'SmaCross'):
+      strategy_specific_params['sma_slow'] = int(request.args.get('sma_slow'))
+      strategy_specific_params['sma_fast'] = int(request.args.get('sma_fast'))
+    elif (strategy == 'MacdSignal'):
+      strategy_specific_params['fast_period'] = int(request.args.get('fast_period'))
+      strategy_specific_params['slow_period'] = int(request.args.get('slow_period'))
+      strategy_specific_params['signal_period'] = int(request.args.get('signal_period'))
+    elif (strategy == 'StochOsci'):
+      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['slow_k_period'] = int(request.args.get('slow_k_period'))
+      strategy_specific_params['slow_d_period'] = int(request.args.get('slow_d_period'))
+      strategy_specific_params['overbought'] = int(request.args.get('overbought'))
+      strategy_specific_params['oversold'] = int(request.args.get('oversold'))
+    elif (strategy == 'StochRsi'):
+      strategy_specific_params['time_period'] = int(request.args.get('time_period'))
+      strategy_specific_params['fast_k_period'] = int(request.args.get('fast_k_period'))
+      strategy_specific_params['fast_d_period'] = int(request.args.get('fast_d_period'))
+      strategy_specific_params['overbought'] = int(request.args.get('overbought'))
+      strategy_specific_params['oversold'] = int(request.args.get('oversold'))
+    else: 
+      # Invalid strategy
+      pass
+
+    strategy_specific_params['long_only'] = long_only
+ 
     stock_obj = get_data.yFinData(ticker)
     # Get last days to backtest, return error messsage if it's not set.
     # valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,3y,5y,10y,ytd,max 
@@ -105,7 +135,8 @@ def backtest_details():
         return json.dumps({'err_msg': 'uable to download stock data.'})
     
     # Raw HTML file in string format
-    return backtest.get_backtest_plot(ticker, ydata, strategy_map[strategy], cash=1000000.0, commission=0.0)
+    return backtest.get_backtest_plot(ticker, ydata, strategy_map[strategy], date_range,
+                        strategy_specific_params, cash=1000000.0, commission=0.0)
 
 
 @app.route("/details")
